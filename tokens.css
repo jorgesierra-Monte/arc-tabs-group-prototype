@@ -1,0 +1,76 @@
+/* Arc design tokens — client mode (semantic layer)
+   Source: Arc Components branch ezWXXlpJmGHxUf8BbdeHS6, "Tab Item - 1" (50922:13705)
+   and "Tab Item - 2" (50922:13721). Only tokens used by the Tab Group are mapped. */
+
+@font-face {
+  font-family: "Season Sans VF";
+  src: url("assets/fonts/SeasonSansVF.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---- Surface ---- */
+  --surface-default: #ffffff;                 /* surface/default */
+  --surface-subtle: #f4f2f0;                  /* surface/subtle */
+  --surface-emphasis: #e6e2de;                /* surface/emphasis (tab rail) */
+  --comp-interaction-surface-hover: #f1efec;  /* comp/interaction/surface/hover */
+
+  /* ---- Text ---- */
+  --text-default: #010204;                    /* text/default */
+  --comp-interaction-text-muted: #5f5f60;     /* comp/interaction/text/muted */
+  --comp-interaction-text-hover: #010204;     /* comp/interaction/text/hover */
+  --comp-interaction-text-disabled: #777878;  /* comp/interaction/text/disabled */
+
+  /* ---- Icon ---- */
+  --icon-default: #010204;                    /* icon/default */
+  --comp-interaction-icon-disabled: #777878;  /* comp/interaction/icon/disabled */
+
+  /* ---- Border ---- */
+  --comp-interaction-border-selected: #000000; /* comp/interaction/border/selected */
+  --comp-interaction-border-disabled: #e3dfda; /* comp/interaction/border/disabled */
+  --hairline-soft: #cac6c2;
+  --focus-ring: #010204;
+
+  /* ---- Status (Tag V2 · Neutral light · Count) ---- */
+  --comp-status-surface-neutral-light: #ffffff;
+  --comp-status-border-neutral-light: #d4d5d5;
+  --comp-status-text-neutral-light: #000000;
+
+  /* ---- Type ---- */
+  --font-sans: "Season Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --fw-regular: 450;                           /* base/fontWeight/sans-regular */
+  --fw-medium: 550;                            /* base/fontWeight/sans-medium */
+  --fs-label-and-body-default: 16px;           /* fontSize/label-and-body/default */
+  --fs-label-and-body-small: 14px;
+  --fs-eyebrow-default: 10px;                  /* fontSize/eyebrow/default */
+  --lh-label-default: 16px;                    /* lineHeight/label/default */
+  --lh-eyebrow-default: 9px;                   /* lineHeight/eyebrow/default */
+  --ls-loose: 0.4px;                           /* base/letterSpacing/loose */
+  --ls-looser: 0.75px;                         /* base/letterSpacing/looser */
+
+  /* ---- Spacing (space/padding-and-gap) ---- */
+  --space-0: 0px;
+  --space-50: 2px;
+  --space-100: 4px;
+  --space-125: 6px;
+  --space-150: 8px;
+  --space-200: 12px;
+  --space-300: 16px;
+  --space-400: 24px;
+  --space-530: 40px;
+
+  /* ---- Radius / border width ---- */
+  --radius-xsmall: 4px;                        /* borderRadius/xsmall */
+  --radius-small: 8px;
+  --radius-medium: 12px;
+  --radius-full: 9999px;
+  --bw-default: 1px;                           /* sem/borderWidth/default */
+  --bw-thick: 2px;
+
+  /* ---- Motion (placeholders — tuned in the animation pass) ---- */
+  --dur-fast: 150ms;
+  --dur-base: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}

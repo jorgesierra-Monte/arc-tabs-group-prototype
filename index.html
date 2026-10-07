@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arc · Tab Group — hover directions</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="masthead">
+    <p class="eyebrow">Arc Components · Tab Group</p>
+    <h1 class="title">Two hover directions, side by side</h1>
+    <p class="lede">Each group runs on its own. Hover, click, or use the arrow keys to move between tabs. Switch tab types from the floating bar at the bottom.</p>
+  </header>
+
+  <main class="compare">
+    <section class="direction" data-direction="a" aria-labelledby="dir-a-title">
+      <div class="direction-head">
+        <span class="direction-badge">A</span>
+        <div>
+          <h2 class="direction-title" id="dir-a-title">Text hover</h2>
+          <p class="direction-desc">Hover darkens the label only. No padding, no surface.</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="tab-group" data-tab-group></div>
+        <div class="tab-panel" data-tab-panel role="tabpanel"></div>
+      </div>
+
+      <h3 class="section-label">States</h3>
+      <div class="states" data-states></div>
+    </section>
+
+    <section class="direction" data-direction="b" aria-labelledby="dir-b-title">
+      <div class="direction-head">
+        <span class="direction-badge">B</span>
+        <div>
+          <h2 class="direction-title" id="dir-b-title">Surface hover</h2>
+          <p class="direction-desc">Hover fills a soft surface behind the tab. The underline sits inset under the label.</p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="tab-group" data-tab-group></div>
+        <div class="tab-panel" data-tab-panel role="tabpanel"></div>
+      </div>
+
+      <h3 class="section-label">States</h3>
+      <div class="states" data-states></div>
+    </section>
+  </main>
+
+  <!-- Floating controls -->
+  <div class="dock" role="toolbar" aria-label="Prototype controls">
+    <div class="dock-group">
+      <span class="dock-label">A</span>
+      <div class="segmented" data-type-control="a" role="radiogroup" aria-label="Direction A tab type">
+        <button type="button" role="radio" data-value="default">Default</button>
+        <button type="button" role="radio" data-value="count">With count</button>
+        <button type="button" role="radio" data-value="icon">With icon</button>
+      </div>
+    </div>
+    <span class="dock-divider" aria-hidden="true"></span>
+    <div class="dock-group">
+      <span class="dock-label">B</span>
+      <div class="segmented" data-type-control="b" role="radiogroup" aria-label="Direction B tab type">
+        <button type="button" role="radio" data-value="default">Default</button>
+        <button type="button" role="radio" data-value="count">With count</button>
+        <button type="button" role="radio" data-value="icon">With icon</button>
+      </div>
+    </div>
+    <span class="dock-divider" aria-hidden="true"></span>
+    <div class="dock-group dock-toggles">
+      <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
+      <label class="switch"><input type="checkbox" data-toggle="disabled" checked /><span>Disabled tab</span></label>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

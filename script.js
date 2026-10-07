@@ -372,9 +372,10 @@ for (const groupName of [...new Set(EASINGS.map((e) => e.group))]) {
       setMotion({ easingId: e.id });
       syncMotionUI();
       replay();
-      playPreview();
+      showPreview(e);
     });
     btn.addEventListener("mouseenter", () => showPreview(e));
+    btn.addEventListener("focus", () => showPreview(e));
     btn.addEventListener("mouseleave", () => showPreview(currentEasing()));
     grid.append(btn);
     optionEls.set(e.id, btn);

@@ -12,7 +12,6 @@ const DISABLED_ID = "files";
 const STATES = [
   { name: "Default",           selected: false, disabled: false },
   { name: "Hover",             selected: false, disabled: false, cls: "is-hover" },
-  { name: "Focus",             selected: false, disabled: false, cls: "is-focus" },
   { name: "Selected",          selected: true,  disabled: false },
   { name: "Selected disabled", selected: true,  disabled: true },
   { name: "Disabled",          selected: false, disabled: true },

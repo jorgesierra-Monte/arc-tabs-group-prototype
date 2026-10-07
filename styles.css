@@ -55,7 +55,7 @@ button { font: inherit; color: inherit; }
 .compare {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 24px 24px 0;
+  padding: 16px 16px 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
@@ -68,7 +68,7 @@ button { font: inherit; color: inherit; }
   background: var(--surface-default);
   border: var(--bw-default) solid var(--surface-emphasis);
   border-radius: var(--radius-medium);
-  padding: 18px;
+  padding: 16px;
   min-width: 0;
 }
 .direction-head {
@@ -129,7 +129,7 @@ button { font: inherit; color: inherit; }
 
 .states {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
 }
 .state-card {
@@ -149,6 +149,7 @@ button { font: inherit; color: inherit; }
   pointer-events: none;
 }
 .state-name {
+  text-align: center;
   font-size: 12px;
   line-height: 16px;
   color: var(--comp-interaction-text-muted);
@@ -301,27 +302,25 @@ button { font: inherit; color: inherit; }
 
 /* ============================================================
    Direction B — Surface hover  (Figma "Tab Item - 2", 50922:13721)
-   Content 32px tall, 6/12 padding. Hover surface = content inset 4px
-   (6/8 visible padding), radius xsmall. Underline is 4px below,
-   inset to the content width.
+   Content 32px tall, 6/8 padding (Hover/Selected variants). The tab box
+   equals the hover surface, so the 40px gap is surface-to-surface.
+   Underline is 4px below, inset to the label width.
    ============================================================ */
 .dir-b .tab { gap: var(--space-100); }
 .dir-b .tab-content {
   height: 32px;
-  padding: var(--space-125) var(--space-200);
+  padding: var(--space-125) var(--space-150);
 }
 .dir-b .tab-content::before {
   content: "";
   position: absolute;
-  inset: 0 var(--space-100);
+  inset: 0;
   border-radius: var(--radius-xsmall);
   background: transparent;
   z-index: -1;
 }
 .dir-b .tab-content { isolation: isolate; }
-.dir-b .tab-indicator { margin: 0 var(--space-200); }
-.dir-b .tab:focus-visible .tab-content::after,
-.dir-b .tab.is-focus .tab-content::after { inset: -4px 0; }
+.dir-b .tab-indicator { margin: 0 var(--space-150); }
 
 @media (hover: hover) {
   .dir-b .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-content::before {

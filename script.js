@@ -13,6 +13,7 @@ const STATES = [
   { name: "Default",           selected: false, disabled: false },
   { name: "Hover",             selected: false, disabled: false, cls: "is-hover" },
   { name: "Selected",          selected: true,  disabled: false },
+  { name: "Hover selected",    selected: true,  disabled: false, cls: "is-hover", only: "b" },
   { name: "Selected disabled", selected: true,  disabled: true },
   { name: "Disabled",          selected: false, disabled: true },
 ];
@@ -226,6 +227,14 @@ class TabGroup {
     const cards = STATES.map((s) => {
       const card = document.createElement("div");
       card.className = "state-card";
+      if (s.only && s.only !== this.key) {
+        card.classList.add("is-empty");
+        const note = document.createElement("span");
+        note.className = "state-name";
+        note.textContent = `${s.name} isn't defined for this direction`;
+        card.append(note);
+        return card;
+      }
       const specimen = document.createElement("div");
       specimen.className = "state-specimen";
       specimen.append(buildTab(sample, this.type, { ...s, interactive: false }));

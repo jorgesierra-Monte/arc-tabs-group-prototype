@@ -98,8 +98,8 @@ button { font: inherit; color: inherit; }
   padding: 32px 0 0;
   overflow-x: auto;
 }
-/* Same height in A (32px) and B (38px) so both halves line up across the split */
-.tab-group { min-height: 38px; }
+/* Same height in A (32px) and B (34px) so both halves line up across the split */
+.tab-group { min-height: 34px; }
 .tab-panel {
   margin-top: 24px;
   min-height: 72px;
@@ -123,7 +123,7 @@ button { font: inherit; color: inherit; }
 
 .states {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 .state-card {
@@ -139,9 +139,15 @@ button { font: inherit; color: inherit; }
 .state-specimen {
   display: flex;
   align-items: flex-start;
-  min-height: 38px;
+  min-height: 34px;
   pointer-events: none;
 }
+.state-card.is-empty {
+  justify-content: center;
+  border-style: dashed;
+  background: transparent;
+}
+.state-card.is-empty .state-name { max-width: 120px; }
 .state-name {
   text-align: center;
   font-size: 12px;
@@ -298,9 +304,10 @@ button { font: inherit; color: inherit; }
    Direction B — Surface hover  (Figma "Tab Item - 2", 50922:13721)
    Content 32px tall, 6/8 padding (Hover/Selected variants). The tab box
    equals the hover surface, so the 40px gap is surface-to-surface.
-   Underline is 4px below, inset to the label width.
+   Underline sits directly under the surface (34px total), inset to the
+   label width. Selected tabs also take the hover surface ("Hover selected").
    ============================================================ */
-.dir-b .tab { gap: var(--space-100); }
+.dir-b .tab { gap: var(--space-0); }
 .dir-b .tab-content {
   height: 32px;
   padding: var(--space-125) var(--space-150);
@@ -317,7 +324,7 @@ button { font: inherit; color: inherit; }
 .dir-b .tab-indicator { margin: 0 var(--space-150); }
 
 @media (hover: hover) {
-  .dir-b .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-content::before {
+  .dir-b .tab:not([aria-disabled="true"]):hover .tab-content::before {
     background: var(--comp-interaction-surface-hover);
   }
 }

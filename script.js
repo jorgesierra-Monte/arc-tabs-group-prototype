@@ -73,6 +73,7 @@ class TabGroup {
     this.groupId = `group-${this.key}`;
     this.type = "default";
     this.selectedId = "notes";
+    this.motion = { mode: "slide", easingId: "out-cubic", duration: 300 };
 
     this.mount = section.querySelector("[data-tab-group]");
     this.panel = section.querySelector("[data-tab-panel]");
@@ -82,6 +83,44 @@ class TabGroup {
     this.mount.classList.add(`dir-${this.key}`);
     this.statesEl.classList.add(`dir-${this.key}`);
     this.render();
+
+    // Keep the sliding bar glued to its tab when fonts load or the layout reflows
+    new ResizeObserver(() => this.placeSlider(false)).observe(this.mount);
+    document.fonts.ready.then(() => this.placeSlider(false));
+  }
+
+  setMotion(patch) {
+    Object.assign(this.motion, patch);
+    this.applyMotion();
+  }
+
+  applyMotion() {
+    const { mode, easingId, duration } = this.motion;
+    const easing = EASINGS.find((e) => e.id === easingId);
+    const list = this.list;
+    list.classList.add("no-transition");
+    list.classList.toggle("motion-slide", mode === "slide");
+    list.classList.toggle("motion-grow", mode === "grow");
+    list.style.setProperty("--motion-dur", `${duration}ms`);
+    list.style.setProperty("--motion-ease", easingCSS(easing));
+    this.placeSlider(false);
+    list.offsetWidth; // flush so the mode switch itself doesn't animate
+    list.classList.remove("no-transition");
+  }
+
+  // Move the shared bar onto the selected tab's own indicator slot
+  placeSlider(animate = true) {
+    if (!this.list || this.motion.mode !== "slide") return;
+    const slot = this.currentTab().querySelector(".tab-indicator");
+    const listBox = this.list.getBoundingClientRect();
+    const box = slot.getBoundingClientRect();
+    if (!animate) this.list.classList.add("no-transition");
+    this.slider.style.width = `${box.width}px`;
+    this.slider.style.transform = `translate(${box.left - listBox.left}px, ${box.top - listBox.top}px)`;
+    if (!animate) {
+      this.list.offsetWidth;
+      this.list.classList.remove("no-transition");
+    }
   }
 
   isDisabled(id) {
@@ -118,8 +157,15 @@ class TabGroup {
     });
     list.addEventListener("keydown", (e) => this.onKeydown(e));
 
+    const slider = document.createElement("span");
+    slider.className = "tab-slider";
+    slider.setAttribute("aria-hidden", "true");
+    list.append(slider);
+
     this.mount.replaceChildren(list);
     this.list = list;
+    this.slider = slider;
+    this.applyMotion();
     this.updatePanel();
     if (hadFocus) this.currentTab().focus();
 
@@ -144,7 +190,14 @@ class TabGroup {
     next.setAttribute("aria-selected", "true");
     next.tabIndex = 0;
     if (focus) next.focus();
+    this.placeSlider(true);
     this.updatePanel();
+  }
+
+  selectNext() {
+    const enabled = TABS.filter((t) => !this.isDisabled(t.id));
+    const i = enabled.findIndex((t) => t.id === this.selectedId);
+    this.select(enabled[(i + 1) % enabled.length].id);
   }
 
   onKeydown(e) {
@@ -228,4 +281,210 @@ document.addEventListener("keydown", (e) => {
   if (!(n >= 1 && n <= 3)) return;
   const key = e.shiftKey ? "b" : "a";
   document.querySelector(`[data-type-control="${key}"] [data-value="${TYPE_KEYS[n - 1]}"]`).click();
+});
+
+// ============================================================
+// Motion controls
+// ============================================================
+const SVG_NS = "http://www.w3.org/2000/svg";
+const motionUI = {
+  target: "both",
+  get groups() { return this.target === "both" ? Object.values(groups) : [groups[this.target]]; },
+  // Values shown in the UI come from the first targeted group
+  get current() { return this.groups[0].motion; },
+};
+
+function wireSegmented(control, getValue, setValue) {
+  const buttons = [...control.querySelectorAll("button")];
+  const sync = () => buttons.forEach((b) => b.setAttribute("aria-checked", String(b.dataset.value === getValue())));
+  buttons.forEach((b) => b.addEventListener("click", () => { setValue(b.dataset.value); syncMotionUI(); }));
+  control.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+    const i = buttons.findIndex((b) => b.dataset.value === getValue());
+    const next = buttons[(i + (e.key === "ArrowRight" ? 1 : buttons.length - 1)) % buttons.length];
+    next.click();
+    next.focus();
+  });
+  return sync;
+}
+
+function setMotion(patch) {
+  motionUI.groups.forEach((g) => g.setMotion(patch));
+}
+
+function replay() {
+  motionUI.groups.forEach((g) => g.selectNext());
+}
+
+function curveSVG(svg, easing, w, h, { strokeWidth = 1.5, grid = false } = {}) {
+  svg.replaceChildren();
+  const pad = 0.2;
+  const Y = (y) => h - ((y + pad) / (1 + pad * 2)) * h;
+  if (grid) {
+    for (const y of [0, 1]) {
+      const line = document.createElementNS(SVG_NS, "line");
+      line.setAttribute("x1", 0); line.setAttribute("x2", w);
+      line.setAttribute("y1", Y(y)); line.setAttribute("y2", Y(y));
+      line.setAttribute("stroke", "var(--hairline-soft)");
+      line.setAttribute("stroke-dasharray", "3 3");
+      svg.append(line);
+    }
+  }
+  const path = document.createElementNS(SVG_NS, "path");
+  path.setAttribute("d", easingPath(easing, w, h, pad));
+  path.setAttribute("fill", "none");
+  path.setAttribute("stroke", "currentColor");
+  path.setAttribute("stroke-width", strokeWidth);
+  path.setAttribute("stroke-linecap", "round");
+  svg.append(path);
+  return { Y };
+}
+
+// ---- Easing popover ----
+const popover = document.getElementById("easing-popover");
+const trigger = document.querySelector("[data-easing-trigger]");
+const listEl = document.querySelector("[data-easing-list]");
+const optionEls = new Map();
+
+for (const groupName of [...new Set(EASINGS.map((e) => e.group))]) {
+  const title = document.createElement("div");
+  title.className = "easing-group-title";
+  title.textContent = groupName;
+  const grid = document.createElement("div");
+  grid.className = "easing-grid";
+  for (const e of EASINGS.filter((x) => x.group === groupName)) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "easing-option";
+    btn.role = "radio";
+    btn.dataset.id = e.id;
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("width", 28); svg.setAttribute("height", 24);
+    svg.setAttribute("viewBox", "0 0 28 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.style.overflow = "visible";
+    curveSVG(svg, e, 28, 24);
+    const name = document.createElement("span");
+    name.textContent = e.name;
+    btn.append(svg, name);
+    btn.addEventListener("click", () => {
+      setMotion({ easingId: e.id });
+      syncMotionUI();
+      replay();
+      playPreview();
+    });
+    btn.addEventListener("mouseenter", () => showPreview(e));
+    btn.addEventListener("mouseleave", () => showPreview(currentEasing()));
+    grid.append(btn);
+    optionEls.set(e.id, btn);
+  }
+  listEl.append(title, grid);
+}
+
+const previewGraph = document.querySelector("[data-preview-graph]");
+const previewDot = document.querySelector("[data-preview-dot]");
+let previewEasing = null;
+let previewRaf = 0;
+
+function currentEasing() {
+  return EASINGS.find((e) => e.id === motionUI.current.easingId);
+}
+
+function showPreview(e) {
+  previewEasing = e;
+  document.querySelector("[data-preview-name]").textContent = e.name;
+  document.querySelector("[data-preview-value]").textContent = easingCSS(e);
+  document.querySelector("[data-preview-value]").title = easingCSS(e);
+  const { Y } = curveSVG(previewGraph, e, 200, 200, { strokeWidth: 2, grid: true });
+  const dot = document.createElementNS(SVG_NS, "circle");
+  dot.setAttribute("r", 5);
+  dot.setAttribute("fill", "var(--text-default)");
+  dot.setAttribute("cx", 200);
+  dot.setAttribute("cy", Y(1));
+  previewGraph.append(dot);
+  previewGraph._dot = dot;
+  previewGraph._Y = Y;
+  playPreview();
+}
+
+let previewLoop = 0;
+function playPreview() {
+  cancelAnimationFrame(previewRaf);
+  clearTimeout(previewLoop);
+  const e = previewEasing;
+  const f = easingFn(e);
+  const dur = motionUI.current.duration;
+  const trackW = previewDot.parentElement.clientWidth - 24;
+  const start = performance.now();
+  const frame = (now) => {
+    const x = Math.min(1, (now - start) / dur);
+    const y = f(x);
+    previewDot.style.transform = `translateX(${y * trackW}px)`;
+    if (previewGraph._dot) {
+      previewGraph._dot.setAttribute("cx", x * 200);
+      previewGraph._dot.setAttribute("cy", previewGraph._Y(y));
+    }
+    if (x < 1) previewRaf = requestAnimationFrame(frame);
+    else if (!popover.hidden) previewLoop = setTimeout(playPreview, 700); // loop while the picker is open
+  };
+  previewRaf = requestAnimationFrame(frame);
+}
+
+function setPopover(open) {
+  popover.hidden = !open;
+  trigger.setAttribute("aria-expanded", String(open));
+  if (open) {
+    showPreview(currentEasing());
+    optionEls.get(motionUI.current.easingId)?.focus({ preventScroll: true });
+  }
+}
+trigger.addEventListener("click", () => setPopover(popover.hidden));
+document.addEventListener("pointerdown", (e) => {
+  if (!popover.hidden && !popover.contains(e.target) && !trigger.contains(e.target)) setPopover(false);
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !popover.hidden) { setPopover(false); trigger.focus(); }
+});
+document.querySelector("[data-copy]").addEventListener("click", async (e) => {
+  try {
+    await navigator.clipboard.writeText(easingCSS(previewEasing));
+    e.target.textContent = "Copied";
+  } catch { e.target.textContent = "Select ↑"; }
+  setTimeout(() => (e.target.textContent = "Copy"), 1200);
+});
+
+// ---- Bar controls ----
+const syncTarget = wireSegmented(document.querySelector("[data-motion-target]"), () => motionUI.target, (v) => { motionUI.target = v; });
+const syncMode = wireSegmented(document.querySelector("[data-motion-mode]"), () => motionUI.current.mode, (v) => setMotion({ mode: v }));
+
+const durationInput = document.querySelector("[data-duration]");
+const durationOut = document.querySelector("[data-duration-value]");
+durationInput.addEventListener("input", () => {
+  setMotion({ duration: Number(durationInput.value) });
+  syncMotionUI();
+});
+durationInput.addEventListener("change", () => replay());
+
+document.querySelector("[data-replay]").addEventListener("click", replay);
+
+function syncMotionUI() {
+  const m = motionUI.current;
+  const e = currentEasing();
+  syncTarget();
+  syncMode();
+  durationInput.value = m.duration;
+  durationOut.textContent = `${m.duration}ms`;
+  document.querySelector("[data-trigger-name]").textContent = e.name;
+  curveSVG(document.querySelector("[data-trigger-thumb]"), e, 24, 20);
+  optionEls.forEach((el, id) => el.setAttribute("aria-checked", String(id === m.easingId)));
+  // Easing/duration don't matter with no animation
+  trigger.disabled = durationInput.disabled = m.mode === "none";
+  trigger.style.opacity = durationInput.parentElement.style.opacity = m.mode === "none" ? 0.4 : "";
+}
+syncMotionUI();
+
+// R replays (outside text inputs)
+document.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "r" && !e.metaKey && !e.ctrlKey && !e.altKey && e.target.tagName !== "INPUT") replay();
 });

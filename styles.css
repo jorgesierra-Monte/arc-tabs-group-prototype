@@ -382,10 +382,6 @@ button { font: inherit; color: inherit; }
 /* Stretch — JS drives each edge per frame, so no CSS transition on the bar */
 .tablist.motion-stretch .tab-slider { transition: none; }
 
-/* Directional grow — the new bar grows from the side you came from */
-.tablist.motion-dgrow[data-dir="right"] .tab-indicator { transform-origin: 0 50%; }
-.tablist.motion-dgrow[data-dir="left"] .tab-indicator { transform-origin: 100% 50%; }
-
 /* Hover preview line — a faint bar hints at the click target */
 .tab-preview {
   position: absolute;

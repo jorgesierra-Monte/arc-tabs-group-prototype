@@ -104,11 +104,10 @@ class TabGroup {
     const easing = EASINGS.find((e) => e.id === easingId);
     const list = this.list;
     list.classList.add("no-transition");
-    // Slide + Stretch share the travelling bar; Grow + Directional share per-tab bars
+    // Slide + Stretch share the travelling bar; Grow uses per-tab bars
     list.classList.toggle("motion-slide", mode === "slide" || mode === "stretch");
     list.classList.toggle("motion-stretch", mode === "stretch");
-    list.classList.toggle("motion-grow", mode === "grow" || mode === "dgrow");
-    list.classList.toggle("motion-dgrow", mode === "dgrow");
+    list.classList.toggle("motion-grow", mode === "grow");
     list.classList.toggle("follow-surface", followSurface && this.key === "b");
     list.classList.toggle("preview-line", previewLine);
     list.style.setProperty("--motion-dur", `${duration}ms`);
@@ -266,8 +265,6 @@ class TabGroup {
       return;
     }
     const prev = this.currentTab();
-    const order = (t) => TABS.findIndex((x) => x.id === t);
-    this.list.dataset.dir = order(id) > order(this.selectedId) ? "right" : "left";
     prev.setAttribute("aria-selected", "false");
     prev.tabIndex = -1;
 

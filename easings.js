@@ -1,42 +1,30 @@
 // Common easing curves + helpers for evaluating and drawing them.
 // Bezier curves map straight to CSS cubic-bezier(); springs are sampled into CSS linear().
 
-const EASINGS = (() => {
-  const b = (id, name, group, p) => ({ id, name, group, kind: "bezier", p });
-  const s = (id, name, group, stiffness, damping) => ({ id, name, group, kind: "spring", stiffness, damping });
-  return [
-    b("linear",          "Linear",          "CSS keywords", [0, 0, 1, 1]),
-    b("ease",            "Ease",            "CSS keywords", [0.25, 0.1, 0.25, 1]),
-    b("ease-in",         "Ease in",         "CSS keywords", [0.42, 0, 1, 1]),
-    b("ease-out",        "Ease out",        "CSS keywords", [0, 0, 0.58, 1]),
-    b("ease-in-out",     "Ease in-out",     "CSS keywords", [0.42, 0, 0.58, 1]),
-
-    b("out-quad",        "Out Quad",        "Ease out", [0.25, 0.46, 0.45, 0.94]),
-    b("out-cubic",       "Out Cubic",       "Ease out", [0.215, 0.61, 0.355, 1]),
-    b("out-quart",       "Out Quart",       "Ease out", [0.165, 0.84, 0.44, 1]),
-    b("out-quint",       "Out Quint",       "Ease out", [0.23, 1, 0.32, 1]),
-    b("out-expo",        "Out Expo",        "Ease out", [0.19, 1, 0.22, 1]),
-    b("out-circ",        "Out Circ",        "Ease out", [0.075, 0.82, 0.165, 1]),
-
-    b("in-out-quad",     "In-out Quad",     "Ease in-out", [0.455, 0.03, 0.515, 0.955]),
-    b("in-out-cubic",    "In-out Cubic",    "Ease in-out", [0.645, 0.045, 0.355, 1]),
-    b("in-out-quart",    "In-out Quart",    "Ease in-out", [0.77, 0, 0.175, 1]),
-    b("in-out-quint",    "In-out Quint",    "Ease in-out", [0.86, 0, 0.07, 1]),
-    b("in-out-expo",     "In-out Expo",     "Ease in-out", [1, 0, 0, 1]),
-    b("in-out-circ",     "In-out Circ",     "Ease in-out", [0.785, 0.135, 0.15, 0.86]),
-
-    b("out-back",        "Out Back",        "Expressive", [0.175, 0.885, 0.32, 1.275]),
-    b("in-out-back",     "In-out Back",     "Expressive", [0.68, -0.55, 0.265, 1.55]),
-    s("spring-gentle",   "Spring gentle",   "Expressive", 170, 26),
-    s("spring-snappy",   "Spring snappy",   "Expressive", 300, 24),
-    s("spring-bouncy",   "Spring bouncy",   "Expressive", 220, 14),
-
-    b("md-standard",     "Material standard",   "System", [0.2, 0, 0, 1]),
-    b("md-emphasized",   "Material emphasized", "System", [0.05, 0.7, 0.1, 1]),
-    b("ios",             "iOS default",         "System", [0.25, 0.1, 0.25, 1]),
-    b("arc-entrance",    "Arc entrance",        "System", [0, 0, 0.38, 0.9]),
-  ];
-})();
+// Four curves, subtle → expressive, based on what common tab components ship with.
+// `duration` is the recommended default for each; springs use their natural settle time.
+const EASINGS = [
+  {
+    id: "standard", name: "Standard", kind: "bezier", p: [0.4, 0, 0.2, 1], duration: 250,
+    desc: "Even ease in and out. The most common tab curve.",
+    source: "Material standard · MUI Tabs · Android TabRow",
+  },
+  {
+    id: "decelerate", name: "Decelerate", kind: "bezier", p: [0.1, 0.9, 0.2, 1], duration: 300,
+    desc: "Leaves fast, glides into place. Feels responsive.",
+    source: "Fluent 2 TabList (curveDecelerateMax)",
+  },
+  {
+    id: "spring", name: "Spring", kind: "spring", stiffness: 380, damping: 30,
+    desc: "Physics-based, settles with a hint of overshoot.",
+    source: "Framer Motion layoutId tabs (Vercel-style)",
+  },
+  {
+    id: "bouncy", name: "Bouncy", kind: "spring", stiffness: 300, damping: 18,
+    desc: "Visible overshoot and settle. Playful, use sparingly.",
+    source: "iOS-style bouncy spring",
+  },
+];
 
 // ---- Evaluation ----
 function bezierFn([x1, y1, x2, y2]) {
@@ -76,7 +64,7 @@ function springSamples(stiffness, damping, n = 60) {
     const a = stiffness * (1 - x) - damping * v;
     v += a * dt; x += v * dt; t += dt;
     pts.push([t, x]);
-    if (Math.abs(1 - x) < 0.001 && Math.abs(v) < 0.01) {
+    if (Math.abs(1 - x) < 0.004 && Math.abs(v) < 0.05) {
       if (settledAt === null) settledAt = t;
     } else settledAt = null;
     if (settledAt !== null && t - settledAt > 0.05) break;
@@ -88,6 +76,7 @@ function springSamples(stiffness, damping, n = 60) {
     const p = pts.find((q) => q[0] >= target) || pts[pts.length - 1];
     out.push(i === n ? 1 : p[1]);
   }
+  out.settle = total; // seconds until the spring comes to rest
   return out; // y values at evenly spaced x
 }
 
@@ -125,4 +114,11 @@ function easingPath(e, w, h, pad = 0.2) {
     d += (i ? "L" : "M") + X(x).toFixed(2) + "," + Y(f(x)).toFixed(2);
   }
   return d;
+}
+
+// Recommended duration in ms (springs: natural settle time, rounded to 25ms)
+function easingDuration(e) {
+  if (e.kind === "bezier") return e.duration;
+  const ys = e._ys || (e._ys = springSamples(e.stiffness, e.damping));
+  return Math.round((ys.settle * 1000) / 25) * 25;
 }

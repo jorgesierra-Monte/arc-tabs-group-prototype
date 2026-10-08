@@ -78,7 +78,7 @@ class TabGroup {
     this.groupId = `group-${this.key}`;
     this.type = "default";
     this.selectedId = "notes";
-    this.motion = { mode: "slide", easingId: "out-cubic", duration: 300, followSurface: false, previewLine: false };
+    this.motion = { mode: "slide", easingId: "standard", duration: 250, followSurface: false, previewLine: false };
 
     this.mount = section.querySelector("[data-tab-group]");
     this.panel = section.querySelector("[data-tab-panel]");
@@ -436,103 +436,94 @@ function curveSVG(svg, easing, w, h, { strokeWidth = 1.5, grid = false } = {}) {
   return { Y };
 }
 
-// ---- Easing popover ----
+// ---- Easing popover: four curves, subtle → expressive ----
 const popover = document.getElementById("easing-popover");
 const trigger = document.querySelector("[data-easing-trigger]");
 const listEl = document.querySelector("[data-easing-list]");
 const optionEls = new Map();
+const GRAPH_W = 144, GRAPH_H = 88;
 
-for (const groupName of [...new Set(EASINGS.map((e) => e.group))]) {
-  const title = document.createElement("div");
-  title.className = "easing-group-title";
-  title.textContent = groupName;
-  const grid = document.createElement("div");
-  grid.className = "easing-grid";
-  for (const e of EASINGS.filter((x) => x.group === groupName)) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "easing-option";
-    btn.role = "radio";
-    btn.dataset.id = e.id;
-    const svg = document.createElementNS(SVG_NS, "svg");
-    svg.setAttribute("width", 28); svg.setAttribute("height", 24);
-    svg.setAttribute("viewBox", "0 0 28 24");
-    svg.setAttribute("aria-hidden", "true");
-    svg.style.overflow = "visible";
-    curveSVG(svg, e, 28, 24);
-    const name = document.createElement("span");
-    name.textContent = e.name;
-    btn.append(svg, name);
-    btn.addEventListener("click", () => {
-      setMotion({ easingId: e.id });
-      syncMotionUI();
-      replay();
-      showPreview(e);
-    });
-    btn.addEventListener("mouseenter", () => showPreview(e));
-    btn.addEventListener("focus", () => showPreview(e));
-    btn.addEventListener("mouseleave", () => showPreview(currentEasing()));
-    grid.append(btn);
-    optionEls.set(e.id, btn);
-  }
-  listEl.append(title, grid);
-}
+for (const e of EASINGS) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "easing-option";
+  btn.role = "radio";
+  btn.dataset.id = e.id;
 
-const previewGraph = document.querySelector("[data-preview-graph]");
-const previewDot = document.querySelector("[data-preview-dot]");
-let previewEasing = null;
-let previewRaf = 0;
-
-function currentEasing() {
-  return EASINGS.find((e) => e.id === motionUI.current.easingId);
-}
-
-function showPreview(e) {
-  previewEasing = e;
-  document.querySelector("[data-preview-name]").textContent = e.name;
-  document.querySelector("[data-preview-value]").textContent = easingCSS(e);
-  document.querySelector("[data-preview-value]").title = easingCSS(e);
-  const { Y } = curveSVG(previewGraph, e, 200, 200, { strokeWidth: 2, grid: true });
+  const svg = document.createElementNS(SVG_NS, "svg");
+  svg.setAttribute("class", "easing-card-graph");
+  svg.setAttribute("viewBox", `0 0 ${GRAPH_W} ${GRAPH_H}`);
+  svg.setAttribute("aria-hidden", "true");
+  const { Y } = curveSVG(svg, e, GRAPH_W, GRAPH_H, { strokeWidth: 2, grid: true });
   const dot = document.createElementNS(SVG_NS, "circle");
-  dot.setAttribute("r", 5);
+  dot.setAttribute("r", 4);
   dot.setAttribute("fill", "var(--text-default)");
-  dot.setAttribute("cx", 200);
+  dot.setAttribute("cx", GRAPH_W);
   dot.setAttribute("cy", Y(1));
-  previewGraph.append(dot);
-  previewGraph._dot = dot;
-  previewGraph._Y = Y;
-  playPreview();
+  svg.append(dot);
+
+  const name = document.createElement("span");
+  name.className = "easing-card-name";
+  name.textContent = e.name;
+  const meta = document.createElement("span");
+  meta.className = "easing-card-meta";
+  meta.textContent = `${easingDuration(e)}ms`;
+  const desc = document.createElement("span");
+  desc.className = "easing-card-desc";
+  desc.textContent = e.desc;
+  const source = document.createElement("span");
+  source.className = "easing-card-source";
+  source.textContent = e.source;
+
+  const head = document.createElement("span");
+  head.className = "easing-card-head";
+  head.append(name, meta);
+  btn.append(svg, head, desc, source);
+
+  btn.addEventListener("click", () => {
+    // Picking a curve also applies its recommended duration (still adjustable)
+    setMotion({ easingId: e.id, duration: easingDuration(e) });
+    syncMotionUI();
+    replay();
+    playCard(e.id);
+  });
+  btn.addEventListener("mouseenter", () => playCard(e.id));
+  btn.addEventListener("focus", () => playCard(e.id));
+  listEl.append(btn);
+  optionEls.set(e.id, { btn, dot, Y, easing: e });
 }
 
-let previewLoop = 0;
-function playPreview() {
-  cancelAnimationFrame(previewRaf);
-  clearTimeout(previewLoop);
-  const e = previewEasing;
-  const f = easingFn(e);
-  const dur = motionUI.current.duration;
-  const trackW = previewDot.parentElement.clientWidth - 24;
+// Animate the dot along a card's curve; the selected card loops while open
+const cardRaf = new Map();
+function playCard(id, loop = false) {
+  const card = optionEls.get(id);
+  cancelAnimationFrame(cardRaf.get(id));
+  clearTimeout(cardRaf.get(id));
+  const f = easingFn(card.easing);
+  const dur = id === motionUI.current.easingId ? motionUI.current.duration : easingDuration(card.easing);
   const start = performance.now();
   const frame = (now) => {
     const x = Math.min(1, (now - start) / dur);
-    const y = f(x);
-    previewDot.style.transform = `translateX(${y * trackW}px)`;
-    if (previewGraph._dot) {
-      previewGraph._dot.setAttribute("cx", x * 200);
-      previewGraph._dot.setAttribute("cy", previewGraph._Y(y));
+    card.dot.setAttribute("cx", x * GRAPH_W);
+    card.dot.setAttribute("cy", card.Y(f(x)));
+    if (x < 1) cardRaf.set(id, requestAnimationFrame(frame));
+    else if (loop && !popover.hidden && id === motionUI.current.easingId) {
+      cardRaf.set(id, setTimeout(() => playCard(id, true), 700));
     }
-    if (x < 1) previewRaf = requestAnimationFrame(frame);
-    else if (!popover.hidden) previewLoop = setTimeout(playPreview, 700); // loop while the picker is open
   };
-  previewRaf = requestAnimationFrame(frame);
+  cardRaf.set(id, requestAnimationFrame(frame));
+}
+
+function currentEasing() {
+  return EASINGS.find((e) => e.id === motionUI.current.easingId);
 }
 
 function setPopover(open) {
   popover.hidden = !open;
   trigger.setAttribute("aria-expanded", String(open));
   if (open) {
-    showPreview(currentEasing());
-    optionEls.get(motionUI.current.easingId)?.focus({ preventScroll: true });
+    playCard(motionUI.current.easingId, true);
+    optionEls.get(motionUI.current.easingId).btn.focus({ preventScroll: true });
   }
 }
 trigger.addEventListener("click", () => setPopover(popover.hidden));
@@ -542,9 +533,17 @@ document.addEventListener("pointerdown", (e) => {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !popover.hidden) { setPopover(false); trigger.focus(); }
 });
+listEl.addEventListener("keydown", (e) => {
+  if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+  e.preventDefault();
+  const i = EASINGS.findIndex((x) => x.id === motionUI.current.easingId);
+  const next = EASINGS[(i + (e.key === "ArrowRight" ? 1 : EASINGS.length - 1)) % EASINGS.length];
+  optionEls.get(next.id).btn.click();
+  optionEls.get(next.id).btn.focus();
+});
 document.querySelector("[data-copy]").addEventListener("click", async (e) => {
   try {
-    await navigator.clipboard.writeText(easingCSS(previewEasing));
+    await navigator.clipboard.writeText(easingCSS(currentEasing()));
     e.target.textContent = "Copied";
   } catch { e.target.textContent = "Select ↑"; }
   setTimeout(() => (e.target.textContent = "Copy"), 1200);
@@ -587,7 +586,9 @@ function syncMotionUI() {
   durationOut.textContent = `${m.duration}ms`;
   document.querySelector("[data-trigger-name]").textContent = e.name;
   curveSVG(document.querySelector("[data-trigger-thumb]"), e, 24, 20);
-  optionEls.forEach((el, id) => el.setAttribute("aria-checked", String(id === m.easingId)));
+  optionEls.forEach(({ btn }, id) => btn.setAttribute("aria-checked", String(id === m.easingId)));
+  document.querySelector("[data-preview-value]").textContent = easingCSS(e);
+  document.querySelector("[data-preview-value]").title = easingCSS(e);
   // Easing/duration don't matter with no animation
   trigger.disabled = durationInput.disabled = m.mode === "none";
   trigger.style.opacity = durationInput.parentElement.style.opacity = m.mode === "none" ? 0.4 : "";

@@ -53,16 +53,12 @@
   <div class="controls">
     <!-- Easing picker (opens above the Motion bar) -->
     <div class="easing-popover" id="easing-popover" hidden>
-      <div class="easing-preview">
-        <div class="easing-preview-name" data-preview-name></div>
-        <svg class="easing-preview-graph" data-preview-graph viewBox="0 0 200 200" aria-hidden="true"></svg>
-        <div class="easing-preview-track" aria-hidden="true"><span class="easing-preview-dot" data-preview-dot></span></div>
-        <div class="easing-value">
-          <code data-preview-value></code>
-          <button type="button" class="copy" data-copy>Copy</button>
-        </div>
+      <div class="easing-scale" aria-hidden="true"><span>Subtle</span><span class="easing-scale-line"></span><span>Expressive</span></div>
+      <div class="easing-cards" data-easing-list role="radiogroup" aria-label="Easing curve"></div>
+      <div class="easing-value">
+        <code data-preview-value></code>
+        <button type="button" class="copy" data-copy>Copy</button>
       </div>
-      <div class="easing-list" data-easing-list role="radiogroup" aria-label="Easing curve"></div>
     </div>
 
     <!-- Motion controls -->

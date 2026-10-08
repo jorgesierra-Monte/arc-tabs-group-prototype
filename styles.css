@@ -358,14 +358,26 @@ button { font: inherit; color: inherit; }
 .tablist.no-transition .tab-slider,
 .tablist.no-transition .tab-indicator { transition: none !important; }
 
-/* Grow — each tab owns its bar; it scales from the centre */
+/* Grow — each tab owns its bar. The new bar scales out from the centre with the
+   chosen curve; the old bar fades out quickly (no contraction), then resets its
+   scale once it's invisible. */
+.tablist { --grow-fade-out: 120ms; }
 .tablist.motion-grow .tab-indicator {
   background: var(--comp-interaction-border-selected);
   transform: scaleX(0);
+  opacity: 0;
   transform-origin: 50% 50%;
-  transition: transform var(--motion-dur) var(--motion-ease);
+  transition:
+    opacity var(--grow-fade-out) ease-out,
+    transform 0s linear var(--grow-fade-out);
 }
-.tablist.motion-grow .tab[aria-selected="true"] .tab-indicator { transform: scaleX(1); }
+.tablist.motion-grow .tab[aria-selected="true"] .tab-indicator {
+  transform: scaleX(1);
+  opacity: 1;
+  transition:
+    transform var(--motion-dur) var(--motion-ease),
+    opacity 0s;
+}
 
 /* ============================================================
    Floating controls

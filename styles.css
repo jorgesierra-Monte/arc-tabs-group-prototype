@@ -379,6 +379,59 @@ button { font: inherit; color: inherit; }
     opacity 0s;
 }
 
+/* Stretch — JS drives each edge per frame, so no CSS transition on the bar */
+.tablist.motion-stretch .tab-slider { transition: none; }
+
+/* Directional grow — the new bar grows from the side you came from */
+.tablist.motion-dgrow[data-dir="right"] .tab-indicator { transform-origin: 0 50%; }
+.tablist.motion-dgrow[data-dir="left"] .tab-indicator { transform-origin: 100% 50%; }
+
+/* Hover preview line — a faint bar hints at the click target */
+.tab-preview {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--bw-thick);
+  background: var(--hairline-soft);
+  opacity: 0;
+  transform: scaleX(0.4);
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 120ms ease-out, transform 180ms cubic-bezier(0.2, 0, 0, 1);
+}
+.dir-b .tab-preview { left: var(--space-150); right: var(--space-150); height: var(--bw-default); }
+.state-specimen .tab-preview { display: none; }
+@media (hover: hover) {
+  .tablist.preview-line .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-preview {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Follow surface (B) — one surface glides under the pointer between tabs */
+.hover-surface {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  border-radius: var(--radius-xsmall);
+  background: var(--comp-interaction-surface-hover);
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+  transition:
+    transform 220ms var(--motion-ease),
+    width 220ms var(--motion-ease),
+    opacity 150ms ease-out;
+}
+.tablist.follow-surface .hover-surface { display: block; }
+.tablist.follow-surface .hover-surface.is-visible { opacity: 1; }
+.hover-surface.no-move { transition: opacity 150ms ease-out; }
+.tablist.follow-surface .tab { z-index: 1; }
+/* The travelling surface replaces each tab's own hover fill */
+.tablist.follow-surface .tab .tab-content::before { background: transparent !important; }
+
 /* ============================================================
    Floating controls
    ============================================================ */
@@ -537,6 +590,19 @@ button { font: inherit; color: inherit; }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 5.2 4.1 7.3 8 3' fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 .switch:hover span { color: var(--text-default); }
+.switch.is-disabled { opacity: 0.4; cursor: not-allowed; }
+.only-b {
+  font-style: normal;
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--surface-emphasis);
+  font-size: 10px;
+  font-weight: var(--fw-medium);
+  color: var(--text-default);
+}
 
 /* ---- Easing picker popover ---- */
 .easing-popover {

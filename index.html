@@ -77,7 +77,9 @@
       <div class="segmented" data-motion-mode role="radiogroup" aria-label="Indicator animation">
         <button type="button" role="radio" data-value="none">None</button>
         <button type="button" role="radio" data-value="slide">Slide</button>
+        <button type="button" role="radio" data-value="stretch">Stretch</button>
         <button type="button" role="radio" data-value="grow">Grow</button>
+        <button type="button" role="radio" data-value="dgrow">Directional</button>
       </div>
       <span class="bar-divider" aria-hidden="true"></span>
       <button type="button" class="chip-button" data-easing-trigger aria-haspopup="true" aria-expanded="false" aria-controls="easing-popover">
@@ -95,6 +97,15 @@
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg>
         Replay
       </button>
+    </div>
+
+    <!-- Hover behaviour (applies to the same Motion target) -->
+    <div class="bar hover-bar" role="toolbar" aria-label="Hover controls">
+      <span class="bar-title">Hover</span>
+      <div class="bar-group toggles">
+        <label class="switch" data-follow-wrap title="Direction B only"><input type="checkbox" data-hover="followSurface" /><span>Follow surface <em class="only-b">B</em></span></label>
+        <label class="switch"><input type="checkbox" data-hover="previewLine" /><span>Preview line</span></label>
+      </div>
     </div>
 
     <!-- Layout controls -->

@@ -63,7 +63,11 @@ function buildTab(tab, type, { selected, disabled, cls, interactive, groupId }) 
   indicator.className = "tab-indicator";
   indicator.setAttribute("aria-hidden", "true");
 
-  el.append(content, indicator);
+  const preview = document.createElement("span");
+  preview.className = "tab-preview";
+  preview.setAttribute("aria-hidden", "true");
+
+  el.append(content, indicator, preview);
   return el;
 }
 
@@ -74,7 +78,7 @@ class TabGroup {
     this.groupId = `group-${this.key}`;
     this.type = "default";
     this.selectedId = "notes";
-    this.motion = { mode: "slide", easingId: "out-cubic", duration: 300 };
+    this.motion = { mode: "slide", easingId: "out-cubic", duration: 300, followSurface: false, previewLine: false };
 
     this.mount = section.querySelector("[data-tab-group]");
     this.panel = section.querySelector("[data-tab-panel]");
@@ -96,33 +100,96 @@ class TabGroup {
   }
 
   applyMotion() {
-    const { mode, easingId, duration } = this.motion;
+    const { mode, easingId, duration, followSurface, previewLine } = this.motion;
     const easing = EASINGS.find((e) => e.id === easingId);
     const list = this.list;
     list.classList.add("no-transition");
-    list.classList.toggle("motion-slide", mode === "slide");
-    list.classList.toggle("motion-grow", mode === "grow");
+    // Slide + Stretch share the travelling bar; Grow + Directional share per-tab bars
+    list.classList.toggle("motion-slide", mode === "slide" || mode === "stretch");
+    list.classList.toggle("motion-stretch", mode === "stretch");
+    list.classList.toggle("motion-grow", mode === "grow" || mode === "dgrow");
+    list.classList.toggle("motion-dgrow", mode === "dgrow");
+    list.classList.toggle("follow-surface", followSurface && this.key === "b");
+    list.classList.toggle("preview-line", previewLine);
     list.style.setProperty("--motion-dur", `${duration}ms`);
     list.style.setProperty("--motion-ease", easingCSS(easing));
     this.placeSlider(false);
+    if (!(followSurface && this.key === "b")) this.hideSurface(true);
     list.offsetWidth; // flush so the mode switch itself doesn't animate
     list.classList.remove("no-transition");
   }
 
-  // Move the shared bar onto the selected tab's own indicator slot
-  placeSlider(animate = true) {
-    if (!this.list || this.motion.mode !== "slide") return;
-    const slot = this.currentTab().querySelector(".tab-indicator");
+  // Selected tab's indicator slot, relative to the tablist
+  slotBox(tabEl) {
     const listBox = this.list.getBoundingClientRect();
-    const box = slot.getBoundingClientRect();
+    const box = tabEl.querySelector(".tab-indicator").getBoundingClientRect();
+    return { x: box.left - listBox.left, y: box.top - listBox.top, w: box.width, h: box.height };
+  }
+
+  setSlider({ x, y, w, h }) {
+    this.slider.style.width = `${w}px`;
+    this.slider.style.height = `${h}px`; // A uses a 2px bar, B a 1px bar
+    this.slider.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  // Move the shared bar onto the selected tab's own indicator slot
+  placeSlider(animate = true, fromTab = null) {
+    const mode = this.motion.mode;
+    if (!this.list || (mode !== "slide" && mode !== "stretch")) return;
+    const to = this.slotBox(this.currentTab());
+    cancelAnimationFrame(this.stretchRaf);
+    if (animate && mode === "stretch" && fromTab) return this.runStretch(this.slotBox(fromTab), to);
     if (!animate) this.list.classList.add("no-transition");
-    this.slider.style.width = `${box.width}px`;
-    this.slider.style.height = `${box.height}px`; // A uses a 2px bar, B a 1px bar
-    this.slider.style.transform = `translate(${box.left - listBox.left}px, ${box.top - listBox.top}px)`;
+    this.setSlider(to);
     if (!animate) {
       this.list.offsetWidth;
       this.list.classList.remove("no-transition");
     }
+  }
+
+  // Stretch: the leading edge leaves first, the trailing edge follows,
+  // so the bar briefly spans both tabs before settling.
+  runStretch(from, to) {
+    const ease = easingFn(EASINGS.find((e) => e.id === this.motion.easingId));
+    const dur = this.motion.duration;
+    const lag = 0.35; // trailing edge starts after 35% of the duration
+    const span = 1 - lag;
+    const right = to.x > from.x;
+    const fromL = from.x, fromR = from.x + from.w, toL = to.x, toR = to.x + to.w;
+    const start = performance.now();
+    const frame = (now) => {
+      const t = Math.min(1, (now - start) / dur);
+      const lead = ease(Math.min(1, t / span));
+      const trail = ease(Math.max(0, (t - lag) / span));
+      const pL = right ? trail : lead;
+      const pR = right ? lead : trail;
+      const L = fromL + (toL - fromL) * pL;
+      const R = fromR + (toR - fromR) * pR;
+      this.setSlider({ x: Math.min(L, R), y: to.y, w: Math.abs(R - L), h: to.h });
+      if (t < 1) this.stretchRaf = requestAnimationFrame(frame);
+    };
+    this.stretchRaf = requestAnimationFrame(frame);
+  }
+
+  // ---- Follow surface (B): one hover surface travels under the pointer ----
+  moveSurface(tabEl) {
+    const listBox = this.list.getBoundingClientRect();
+    const box = tabEl.querySelector(".tab-content").getBoundingClientRect();
+    const s = this.surface;
+    const wasHidden = !s.classList.contains("is-visible");
+    if (wasHidden) s.classList.add("no-move"); // appear in place, don't fly in
+    s.style.width = `${box.width}px`;
+    s.style.height = `${box.height}px`;
+    s.style.transform = `translate(${box.left - listBox.left}px, ${box.top - listBox.top}px)`;
+    if (wasHidden) { s.offsetWidth; s.classList.remove("no-move"); }
+    s.classList.add("is-visible");
+  }
+
+  hideSurface(instant = false) {
+    if (!this.surface) return;
+    if (instant) this.surface.classList.add("no-move");
+    this.surface.classList.remove("is-visible");
+    if (instant) { this.surface.offsetWidth; this.surface.classList.remove("no-move"); }
   }
 
   isDisabled(id) {
@@ -164,6 +231,21 @@ class TabGroup {
     slider.setAttribute("aria-hidden", "true");
     list.append(slider);
 
+    const surface = document.createElement("span");
+    surface.className = "hover-surface";
+    surface.setAttribute("aria-hidden", "true");
+    list.prepend(surface);
+    this.surface = surface;
+
+    list.addEventListener("pointerover", (e) => {
+      if (!list.classList.contains("follow-surface")) return;
+      const tab = e.target.closest(".tab");
+      if (!tab) return;
+      if (tab.getAttribute("aria-disabled") === "true") this.hideSurface();
+      else this.moveSurface(tab);
+    });
+    list.addEventListener("pointerleave", () => this.hideSurface());
+
     this.mount.replaceChildren(list);
     this.list = list;
     this.slider = slider;
@@ -184,6 +266,8 @@ class TabGroup {
       return;
     }
     const prev = this.currentTab();
+    const order = (t) => TABS.findIndex((x) => x.id === t);
+    this.list.dataset.dir = order(id) > order(this.selectedId) ? "right" : "left";
     prev.setAttribute("aria-selected", "false");
     prev.tabIndex = -1;
 
@@ -192,7 +276,7 @@ class TabGroup {
     next.setAttribute("aria-selected", "true");
     next.tabIndex = 0;
     if (focus) next.focus();
-    this.placeSlider(true);
+    this.placeSlider(true, prev);
     this.updatePanel();
   }
 
@@ -479,8 +563,22 @@ durationInput.addEventListener("change", () => replay());
 
 document.querySelector("[data-replay]").addEventListener("click", replay);
 
+// Hover toggles
+const hoverInputs = [...document.querySelectorAll("[data-hover]")];
+hoverInputs.forEach((input) => input.addEventListener("change", () => {
+  setMotion({ [input.dataset.hover]: input.checked });
+  syncMotionUI();
+}));
+
 function syncMotionUI() {
   const m = motionUI.current;
+  hoverInputs.forEach((input) => { input.checked = m[input.dataset.hover]; });
+  // Follow surface only exists in B — read/write B's value; disable when B isn't targeted
+  const followInput = document.querySelector('[data-hover="followSurface"]');
+  const bTargeted = motionUI.target !== "a";
+  followInput.checked = groups.b.motion.followSurface;
+  followInput.disabled = !bTargeted;
+  document.querySelector("[data-follow-wrap]").classList.toggle("is-disabled", !bTargeted);
   const e = currentEasing();
   syncTarget();
   syncMode();

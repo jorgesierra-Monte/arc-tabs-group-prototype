@@ -107,30 +107,29 @@
       </div>
     </div>
 
-    <!-- Layout controls -->
-    <div class="bar dock" role="toolbar" aria-label="Tab type controls">
-      <div class="bar-group">
-        <span class="bar-label">A</span>
-        <div class="segmented" data-type-control="a" role="radiogroup" aria-label="Direction A tab type">
-          <button type="button" role="radio" data-value="default">Default</button>
-          <button type="button" role="radio" data-value="count">With count</button>
-          <button type="button" role="radio" data-value="icon">With icon</button>
-        </div>
+  </div>
+
+  <!-- Variants: vertical stack centred on the dividing line -->
+  <div class="variants" role="toolbar" aria-label="Tab variants">
+    <div class="variants-group">
+      <div class="variants-head"><span class="bar-label">A</span><span class="bar-title">Type</span></div>
+      <div class="segmented is-vertical" data-type-control="a" role="radiogroup" aria-label="Direction A tab type">
+        <button type="button" role="radio" data-value="default">Default</button>
+        <button type="button" role="radio" data-value="count">With count</button>
+        <button type="button" role="radio" data-value="icon">With icon</button>
       </div>
-      <span class="bar-divider" aria-hidden="true"></span>
-      <div class="bar-group">
-        <span class="bar-label">B</span>
-        <div class="segmented" data-type-control="b" role="radiogroup" aria-label="Direction B tab type">
-          <button type="button" role="radio" data-value="default">Default</button>
-          <button type="button" role="radio" data-value="count">With count</button>
-          <button type="button" role="radio" data-value="icon">With icon</button>
-        </div>
+    </div>
+    <div class="variants-group">
+      <div class="variants-head"><span class="bar-label">B</span><span class="bar-title">Type</span></div>
+      <div class="segmented is-vertical" data-type-control="b" role="radiogroup" aria-label="Direction B tab type">
+        <button type="button" role="radio" data-value="default">Default</button>
+        <button type="button" role="radio" data-value="count">With count</button>
+        <button type="button" role="radio" data-value="icon">With icon</button>
       </div>
-      <span class="bar-divider" aria-hidden="true"></span>
-      <div class="bar-group toggles">
-        <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
-        <label class="switch"><input type="checkbox" data-toggle="disabled" checked /><span>Disabled tab</span></label>
-      </div>
+    </div>
+    <div class="variants-group toggles">
+      <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
+      <label class="switch"><input type="checkbox" data-toggle="disabled" checked /><span>Disabled tab</span></label>
     </div>
   </div>
 

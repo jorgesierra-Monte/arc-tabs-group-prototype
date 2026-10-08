@@ -389,7 +389,7 @@ button { font: inherit; color: inherit; }
 /* Stretch — JS drives each edge per frame, so no CSS transition on the bar */
 .tablist.motion-stretch .tab-slider { transition: none; }
 
-/* Line on hover (Direction A option) — a faint bar previews the click target */
+/* Line on hover (Direction A option) — a faint bar previews the click target, no animation */
 .tab-hover-line {
   position: absolute;
   left: 0;
@@ -397,17 +397,13 @@ button { font: inherit; color: inherit; }
   bottom: 0;
   height: var(--bw-thick);
   background: var(--hairline-soft);
-  opacity: 0;
-  transform: scaleX(0.4);
   pointer-events: none;
   z-index: 1;
-  transition: opacity 120ms ease-out, transform 180ms cubic-bezier(0.2, 0, 0, 1);
+  display: none; /* no animation — simply shown on hover */
 }
-.state-specimen .tab-hover-line { display: none; }
 @media (hover: hover) {
   .tablist.hover-line .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-hover-line {
-    opacity: 1;
-    transform: scaleX(1);
+    display: block;
   }
 }
 

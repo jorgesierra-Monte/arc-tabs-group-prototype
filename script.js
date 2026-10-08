@@ -431,7 +431,7 @@ function curveSVG(svg, easing, w, h, { strokeWidth = 1.5, grid = false } = {}) {
   return { Y };
 }
 
-// ---- Easing popover: four curves, subtle → expressive ----
+// ---- Easing popover: three curves, subtle → expressive ----
 const popover = document.getElementById("easing-popover");
 const trigger = document.querySelector("[data-easing-trigger]");
 const listEl = document.querySelector("[data-easing-list]");

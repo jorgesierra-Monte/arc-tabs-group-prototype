@@ -1,7 +1,7 @@
 // Common easing curves + helpers for evaluating and drawing them.
 // Bezier curves map straight to CSS cubic-bezier(); springs are sampled into CSS linear().
 
-// Four curves, subtle → expressive, based on what common tab components ship with.
+// Three curves, subtle → expressive, based on what common tab components ship with.
 // `duration` is the recommended default for each; springs use their natural settle time.
 const EASINGS = [
   {
@@ -18,11 +18,6 @@ const EASINGS = [
     id: "spring", name: "Spring", kind: "spring", stiffness: 380, damping: 30,
     desc: "Physics-based, settles with a hint of overshoot.",
     source: "Framer Motion layoutId tabs (Vercel-style)",
-  },
-  {
-    id: "bouncy", name: "Bouncy", kind: "spring", stiffness: 300, damping: 18,
-    desc: "Visible overshoot and settle. Playful, use sparingly.",
-    source: "iOS-style bouncy spring",
   },
 ];
 

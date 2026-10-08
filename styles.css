@@ -617,12 +617,12 @@ button { font: inherit; color: inherit; }
 .variants .switch span { padding: 4px 4px; white-space: nowrap; }
 .variants .hover-group { gap: 4px; }
 
-/* ---- Easing picker popover: four curves, subtle → expressive ---- */
+/* ---- Easing picker popover: three curves, subtle → expressive ---- */
 .easing-popover {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 720px;
+  width: 560px;
   max-width: calc(100vw - 24px);
   padding: 14px;
   background: var(--surface-default);
@@ -648,7 +648,7 @@ button { font: inherit; color: inherit; }
 
 .easing-cards {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 .easing-option {
@@ -718,5 +718,9 @@ button { font: inherit; color: inherit; }
   .variants { top: 16px; right: 16px; left: auto; transform: none; }
   .bar { flex-wrap: wrap; justify-content: center; border-radius: 20px; padding: 8px; gap: 8px; }
   .bar-divider { display: none; }
-  .easing-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+}
+
+@media (max-width: 600px) {
+  .easing-cards { grid-template-columns: 1fr; }
 }

@@ -63,11 +63,7 @@ function buildTab(tab, type, { selected, disabled, cls, interactive, groupId }) 
   indicator.className = "tab-indicator";
   indicator.setAttribute("aria-hidden", "true");
 
-  const preview = document.createElement("span");
-  preview.className = "tab-preview";
-  preview.setAttribute("aria-hidden", "true");
-
-  el.append(content, indicator, preview);
+  el.append(content, indicator);
   return el;
 }
 
@@ -78,7 +74,7 @@ class TabGroup {
     this.groupId = `group-${this.key}`;
     this.type = "default";
     this.selectedId = "notes";
-    this.motion = { mode: "slide", easingId: "standard", duration: 250, followSurface: false, previewLine: false };
+    this.motion = { mode: "slide", easingId: "standard", duration: 250, followSurface: false };
 
     this.mount = section.querySelector("[data-tab-group]");
     this.panel = section.querySelector("[data-tab-panel]");
@@ -100,7 +96,7 @@ class TabGroup {
   }
 
   applyMotion() {
-    const { mode, easingId, duration, followSurface, previewLine } = this.motion;
+    const { mode, easingId, duration, followSurface } = this.motion;
     const easing = EASINGS.find((e) => e.id === easingId);
     const list = this.list;
     list.classList.add("no-transition");
@@ -109,7 +105,6 @@ class TabGroup {
     list.classList.toggle("motion-stretch", mode === "stretch");
     list.classList.toggle("motion-grow", mode === "grow");
     list.classList.toggle("follow-surface", followSurface && this.key === "b");
-    list.classList.toggle("preview-line", previewLine);
     list.style.setProperty("--motion-dur", `${duration}ms`);
     list.style.setProperty("--motion-ease", easingCSS(easing));
     this.placeSlider(false);

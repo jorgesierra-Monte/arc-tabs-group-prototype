@@ -389,14 +389,14 @@ button { font: inherit; color: inherit; }
 /* Stretch — JS drives each edge per frame, so no CSS transition on the bar */
 .tablist.motion-stretch .tab-slider { transition: none; }
 
-/* Line on hover (Direction A option) — a faint bar previews the click target, no animation */
+/* Line on hover (Direction A option) — black bar under the hovered tab, no animation */
 .tab-hover-line {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: var(--bw-thick);
-  background: var(--hairline-soft);
+  background: var(--comp-interaction-border-selected); /* black, same as the selected underline */
   pointer-events: none;
   z-index: 1;
   display: none; /* no animation — simply shown on hover */

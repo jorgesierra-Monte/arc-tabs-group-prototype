@@ -152,7 +152,7 @@ class TabGroup {
   runStretch(from, to) {
     const ease = easingFn(EASINGS.find((e) => e.id === this.motion.easingId));
     const dur = this.motion.duration;
-    const lag = 0.35; // trailing edge starts after 35% of the duration
+    const lag = 0.12; // trailing edge starts after 12% of the duration — a subtle stretch
     const span = 1 - lag;
     const right = to.x > from.x;
     const fromL = from.x, fromR = from.x + from.w, toL = to.x, toR = to.x + to.w;

@@ -98,8 +98,8 @@ button { font: inherit; color: inherit; }
   padding: 32px 0 0;
   overflow-x: auto;
 }
-/* Same height in A (32px) and B (34px) so both halves line up across the split */
-.tab-group { min-height: 34px; }
+/* Same height in A (32px) and B (33px) so both halves line up across the split */
+.tab-group { min-height: 33px; }
 .tab-panel {
   margin-top: 24px;
   min-height: 72px;
@@ -304,7 +304,7 @@ button { font: inherit; color: inherit; }
    Direction B — Surface hover  (Figma "Tab Item - 2", 50922:13721)
    Content 32px tall, 6/8 padding (Hover/Selected variants). The tab box
    equals the hover surface, so the 40px gap is surface-to-surface.
-   Underline sits directly under the surface (34px total), inset to the
+   1px underline sits directly under the surface (33px total), inset to the
    label width. Selected tabs also take the hover surface ("Hover selected").
    ============================================================ */
 .dir-b .tab { gap: var(--space-0); }
@@ -321,7 +321,7 @@ button { font: inherit; color: inherit; }
   z-index: -1;
 }
 .dir-b .tab-content { isolation: isolate; }
-.dir-b .tab-indicator { margin: 0 var(--space-150); }
+.dir-b .tab-indicator { margin: 0 var(--space-150); height: var(--bw-default); }
 
 @media (hover: hover) {
   .dir-b .tab:not([aria-disabled="true"]):hover .tab-content::before {

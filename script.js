@@ -117,6 +117,7 @@ class TabGroup {
     const box = slot.getBoundingClientRect();
     if (!animate) this.list.classList.add("no-transition");
     this.slider.style.width = `${box.width}px`;
+    this.slider.style.height = `${box.height}px`; // A uses a 2px bar, B a 1px bar
     this.slider.style.transform = `translate(${box.left - listBox.left}px, ${box.top - listBox.top}px)`;
     if (!animate) {
       this.list.offsetWidth;

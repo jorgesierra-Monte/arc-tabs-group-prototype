@@ -414,6 +414,11 @@ button { font: inherit; color: inherit; }
 /* ============================================================
    Floating controls
    ============================================================ */
+:root {
+  /* Soft, diffuse elevation for floating panels */
+  --shadow-float: 0 1px 2px rgba(1, 2, 4, 0.03), 0 6px 20px rgba(1, 2, 4, 0.05);
+  --shadow-popover: 0 1px 2px rgba(1, 2, 4, 0.03), 0 12px 32px rgba(1, 2, 4, 0.08);
+}
 .controls {
   position: fixed;
   left: 50%;
@@ -437,7 +442,7 @@ button { font: inherit; color: inherit; }
   background: var(--surface-default);
   border: var(--bw-default) solid var(--surface-emphasis);
   border-radius: var(--radius-full);
-  box-shadow: 0 1px 2px rgba(1, 2, 4, 0.06), 0 8px 24px rgba(1, 2, 4, 0.1);
+  box-shadow: var(--shadow-float);
   white-space: nowrap;
 }
 .bar-title {
@@ -598,7 +603,7 @@ button { font: inherit; color: inherit; }
   background: var(--surface-default);
   border: var(--bw-default) solid var(--surface-emphasis);
   border-radius: 16px;
-  box-shadow: 0 1px 2px rgba(1, 2, 4, 0.06), 0 8px 24px rgba(1, 2, 4, 0.1);
+  box-shadow: var(--shadow-float);
 }
 .variants-group { display: flex; flex-direction: column; gap: 6px; }
 .variants-group + .variants-group {
@@ -623,7 +628,7 @@ button { font: inherit; color: inherit; }
   background: var(--surface-default);
   border: var(--bw-default) solid var(--surface-emphasis);
   border-radius: 16px;
-  box-shadow: 0 1px 2px rgba(1, 2, 4, 0.06), 0 16px 40px rgba(1, 2, 4, 0.14);
+  box-shadow: var(--shadow-popover);
 }
 .easing-popover[hidden] { display: none; }
 

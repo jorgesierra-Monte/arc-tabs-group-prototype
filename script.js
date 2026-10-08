@@ -151,7 +151,8 @@ class TabGroup {
   runStretch(from, to) {
     const ease = easingFn(EASINGS.find((e) => e.id === this.motion.easingId));
     const dur = this.motion.duration;
-    const lag = 0.12; // trailing edge starts after 12% of the duration — a subtle stretch
+    const lag = 0.06; // trailing edge starts after 6% of the duration
+    const maxStretch = 16; // never more than 16px longer than the bar's resting width
     const span = 1 - lag;
     const right = to.x > from.x;
     const fromL = from.x, fromR = from.x + from.w, toL = to.x, toR = to.x + to.w;
@@ -162,8 +163,11 @@ class TabGroup {
       const trail = ease(Math.max(0, (t - lag) / span));
       const pL = right ? trail : lead;
       const pR = right ? lead : trail;
-      const L = fromL + (toL - fromL) * pL;
-      const R = fromR + (toR - fromR) * pR;
+      let L = fromL + (toL - fromL) * pL;
+      let R = fromR + (toR - fromR) * pR;
+      const maxW = Math.max(from.w, to.w) + maxStretch;
+      if (right) L = Math.max(L, R - maxW); // pull the trailing edge along
+      else R = Math.min(R, L + maxW);
       this.setSlider({ x: Math.min(L, R), y: to.y, w: Math.abs(R - L), h: to.h });
       if (t < 1) this.stretchRaf = requestAnimationFrame(frame);
     };

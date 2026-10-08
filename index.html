@@ -93,15 +93,6 @@
         Replay
       </button>
     </div>
-
-    <!-- Hover behaviour (applies to the same Motion target) -->
-    <div class="bar hover-bar" role="toolbar" aria-label="Hover controls">
-      <span class="bar-title">Hover</span>
-      <div class="bar-group toggles">
-        <label class="switch" data-follow-wrap title="Direction B only"><input type="checkbox" data-hover="followSurface" /><span>Follow surface <em class="only-b">B</em></span></label>
-      </div>
-    </div>
-
   </div>
 
   <!-- Variants: vertical stack centred on the dividing line -->
@@ -125,6 +116,10 @@
     <div class="variants-group toggles">
       <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
       <label class="switch"><input type="checkbox" data-toggle="disabled" checked /><span>Disabled tab</span></label>
+    </div>
+    <div class="variants-group hover-group" role="group" aria-label="Hover behaviour (follows the Motion target)">
+      <div class="variants-head"><span class="bar-title">Hover</span><em class="only-b" title="Direction B only">B</em></div>
+      <label class="switch" data-follow-wrap title="Direction B only"><input type="checkbox" data-hover="followSurface" /><span>Follow surface</span></label>
     </div>
   </div>
 

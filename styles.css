@@ -609,7 +609,8 @@ button { font: inherit; color: inherit; }
 .segmented.is-vertical { flex-direction: column; border-radius: 12px; }
 .segmented.is-vertical button { text-align: left; border-radius: 9px; }
 .variants .toggles { gap: 2px; padding: 12px 0 0; }
-.variants .switch span { padding: 4px 4px; }
+.variants .switch span { padding: 4px 4px; white-space: nowrap; }
+.variants .hover-group { gap: 4px; }
 
 /* ---- Easing picker popover: four curves, subtle → expressive ---- */
 .easing-popover {

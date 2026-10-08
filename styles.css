@@ -98,8 +98,8 @@ button { font: inherit; color: inherit; }
   padding: 32px 0 0;
   overflow-x: auto;
 }
-/* Same height in A (32px) and B (33px) so both halves line up across the split */
-.tab-group { min-height: 33px; }
+/* Same height in A (32px) and B (38px) so both halves line up across the split */
+.tab-group { min-height: 38px; }
 .tab-panel {
   margin-top: 24px;
   min-height: 72px;
@@ -139,7 +139,7 @@ button { font: inherit; color: inherit; }
 .state-specimen {
   display: flex;
   align-items: flex-start;
-  min-height: 34px;
+  min-height: 38px;
   pointer-events: none;
 }
 .state-card.is-empty {
@@ -304,10 +304,10 @@ button { font: inherit; color: inherit; }
    Direction B — Surface hover  (Figma "Tab Item - 2", 50922:13721)
    Content 32px tall, 6/8 padding (Hover/Selected variants). The tab box
    equals the hover surface, so the 40px gap is surface-to-surface.
-   1px underline sits directly under the surface (33px total), inset to the
+   2px underline sits 4px below the surface (38px total), inset to the
    label width. Selected tabs also take the hover surface ("Hover selected").
    ============================================================ */
-.dir-b .tab { gap: var(--space-0); }
+.dir-b .tab { gap: var(--space-100); }
 .dir-b .tab-content {
   height: 32px;
   padding: var(--space-125) var(--space-150);
@@ -321,7 +321,7 @@ button { font: inherit; color: inherit; }
   z-index: -1;
 }
 .dir-b .tab-content { isolation: isolate; }
-.dir-b .tab-indicator { margin: 0 var(--space-150); height: var(--bw-default); }
+.dir-b .tab-indicator { margin: 0 var(--space-150); }
 
 @media (hover: hover) {
   .dir-b .tab:not([aria-disabled="true"]):hover .tab-content::before {
@@ -400,7 +400,7 @@ button { font: inherit; color: inherit; }
   z-index: 1;
   transition: opacity 120ms ease-out, transform 180ms cubic-bezier(0.2, 0, 0, 1);
 }
-.dir-b .tab-preview { left: var(--space-150); right: var(--space-150); height: var(--bw-default); }
+.dir-b .tab-preview { left: var(--space-150); right: var(--space-150); }
 .state-specimen .tab-preview { display: none; }
 @media (hover: hover) {
   .tablist.preview-line .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-preview {

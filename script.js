@@ -128,7 +128,7 @@ class TabGroup {
 
   setSlider({ x, y, w, h }) {
     this.slider.style.width = `${w}px`;
-    this.slider.style.height = `${h}px`; // A uses a 2px bar, B a 1px bar
+    this.slider.style.height = `${h}px`; // matches the slot's bar thickness
     this.slider.style.transform = `translate(${x}px, ${y}px)`;
   }
 

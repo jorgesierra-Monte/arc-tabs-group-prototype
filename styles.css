@@ -389,28 +389,27 @@ button { font: inherit; color: inherit; }
 /* Stretch — JS drives each edge per frame, so no CSS transition on the bar */
 .tablist.motion-stretch .tab-slider { transition: none; }
 
-/* Follow surface (B) — one surface glides under the pointer between tabs */
-.hover-surface {
+/* Line on hover (Direction A option) — a faint bar previews the click target */
+.tab-hover-line {
   position: absolute;
   left: 0;
-  top: 0;
-  z-index: 0;
-  border-radius: var(--radius-xsmall);
-  background: var(--comp-interaction-surface-hover);
+  right: 0;
+  bottom: 0;
+  height: var(--bw-thick);
+  background: var(--hairline-soft);
   opacity: 0;
+  transform: scaleX(0.4);
   pointer-events: none;
-  display: none;
-  transition:
-    transform 220ms var(--motion-ease),
-    width 220ms var(--motion-ease),
-    opacity 150ms ease-out;
+  z-index: 1;
+  transition: opacity 120ms ease-out, transform 180ms cubic-bezier(0.2, 0, 0, 1);
 }
-.tablist.follow-surface .hover-surface { display: block; }
-.tablist.follow-surface .hover-surface.is-visible { opacity: 1; }
-.hover-surface.no-move { transition: opacity 150ms ease-out; }
-.tablist.follow-surface .tab { z-index: 1; }
-/* The travelling surface replaces each tab's own hover fill */
-.tablist.follow-surface .tab .tab-content::before { background: transparent !important; }
+.state-specimen .tab-hover-line { display: none; }
+@media (hover: hover) {
+  .tablist.hover-line .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-hover-line {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
 
 /* ============================================================
    Floating controls
@@ -575,19 +574,6 @@ button { font: inherit; color: inherit; }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 5.2 4.1 7.3 8 3' fill='none' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 .switch:hover span { color: var(--text-default); }
-.switch.is-disabled { opacity: 0.4; cursor: not-allowed; }
-.only-b {
-  font-style: normal;
-  display: inline-grid;
-  place-items: center;
-  width: 16px;
-  height: 16px;
-  border-radius: var(--radius-full);
-  background: var(--surface-emphasis);
-  font-size: 10px;
-  font-weight: var(--fw-medium);
-  color: var(--text-default);
-}
 
 /* ---- Variants panel (vertical, centred on the dividing line) ---- */
 .variants {
@@ -617,6 +603,18 @@ button { font: inherit; color: inherit; }
 .variants .toggles { gap: 2px; padding: 12px 0 0; }
 .variants .switch span { padding: 4px 4px; white-space: nowrap; }
 .variants .hover-group { gap: 4px; }
+.dir-badge {
+  font-style: normal;
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--surface-emphasis);
+  font-size: 10px;
+  font-weight: var(--fw-medium);
+  color: var(--text-default);
+}
 
 /* ---- Easing picker popover: three curves, subtle → expressive ---- */
 .easing-popover {

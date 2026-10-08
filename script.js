@@ -18,7 +18,7 @@ const STATES = [
   { name: "Disabled",          selected: false, disabled: true },
 ];
 
-const settings = { divider: true, disabledTab: true };
+const settings = { divider: true, disabledTab: true, hoverLine: false };
 
 function buildTab(tab, type, { selected, disabled, cls, interactive, groupId }) {
   const el = document.createElement(interactive ? "button" : "div");
@@ -63,7 +63,12 @@ function buildTab(tab, type, { selected, disabled, cls, interactive, groupId }) 
   indicator.className = "tab-indicator";
   indicator.setAttribute("aria-hidden", "true");
 
-  el.append(content, indicator);
+  // Faint line that previews the underline on hover (Direction A option)
+  const hoverLine = document.createElement("span");
+  hoverLine.className = "tab-hover-line";
+  hoverLine.setAttribute("aria-hidden", "true");
+
+  el.append(content, indicator, hoverLine);
   return el;
 }
 
@@ -74,7 +79,7 @@ class TabGroup {
     this.groupId = `group-${this.key}`;
     this.type = "default";
     this.selectedId = "notes";
-    this.motion = { mode: "slide", easingId: "standard", duration: 250, followSurface: false };
+    this.motion = { mode: "slide", easingId: "standard", duration: 250 };
 
     this.mount = section.querySelector("[data-tab-group]");
     this.panel = section.querySelector("[data-tab-panel]");
@@ -96,7 +101,7 @@ class TabGroup {
   }
 
   applyMotion() {
-    const { mode, easingId, duration, followSurface } = this.motion;
+    const { mode, easingId, duration } = this.motion;
     const easing = EASINGS.find((e) => e.id === easingId);
     const list = this.list;
     list.classList.add("no-transition");
@@ -104,11 +109,9 @@ class TabGroup {
     list.classList.toggle("motion-slide", mode === "slide" || mode === "stretch");
     list.classList.toggle("motion-stretch", mode === "stretch");
     list.classList.toggle("motion-grow", mode === "grow");
-    list.classList.toggle("follow-surface", followSurface && this.key === "b");
     list.style.setProperty("--motion-dur", `${duration}ms`);
     list.style.setProperty("--motion-ease", easingCSS(easing));
     this.placeSlider(false);
-    if (!(followSurface && this.key === "b")) this.hideSurface(true);
     list.offsetWidth; // flush so the mode switch itself doesn't animate
     list.classList.remove("no-transition");
   }
@@ -169,27 +172,6 @@ class TabGroup {
     this.stretchRaf = requestAnimationFrame(frame);
   }
 
-  // ---- Follow surface (B): one hover surface travels under the pointer ----
-  moveSurface(tabEl) {
-    const listBox = this.list.getBoundingClientRect();
-    const box = tabEl.querySelector(".tab-content").getBoundingClientRect();
-    const s = this.surface;
-    const wasHidden = !s.classList.contains("is-visible");
-    if (wasHidden) s.classList.add("no-move"); // appear in place, don't fly in
-    s.style.width = `${box.width}px`;
-    s.style.height = `${box.height}px`;
-    s.style.transform = `translate(${box.left - listBox.left}px, ${box.top - listBox.top}px)`;
-    if (wasHidden) { s.offsetWidth; s.classList.remove("no-move"); }
-    s.classList.add("is-visible");
-  }
-
-  hideSurface(instant = false) {
-    if (!this.surface) return;
-    if (instant) this.surface.classList.add("no-move");
-    this.surface.classList.remove("is-visible");
-    if (instant) { this.surface.offsetWidth; this.surface.classList.remove("no-move"); }
-  }
-
   isDisabled(id) {
     return settings.disabledTab && id === DISABLED_ID;
   }
@@ -204,7 +186,8 @@ class TabGroup {
     if (this.isDisabled(this.selectedId)) this.selectedId = TABS[0].id;
 
     const list = document.createElement("div");
-    list.className = "tablist" + (settings.divider ? " has-divider" : "");
+    list.className = "tablist" + (settings.divider ? " has-divider" : "") +
+      (settings.hoverLine && this.key === "a" ? " hover-line" : ""); // A only
     list.role = "tablist";
     list.setAttribute("aria-label", `Direction ${this.key.toUpperCase()} tabs`);
 
@@ -228,21 +211,6 @@ class TabGroup {
     slider.className = "tab-slider";
     slider.setAttribute("aria-hidden", "true");
     list.append(slider);
-
-    const surface = document.createElement("span");
-    surface.className = "hover-surface";
-    surface.setAttribute("aria-hidden", "true");
-    list.prepend(surface);
-    this.surface = surface;
-
-    list.addEventListener("pointerover", (e) => {
-      if (!list.classList.contains("follow-surface")) return;
-      const tab = e.target.closest(".tab");
-      if (!tab) return;
-      if (tab.getAttribute("aria-disabled") === "true") this.hideSurface();
-      else this.moveSurface(tab);
-    });
-    list.addEventListener("pointerleave", () => this.hideSurface());
 
     this.mount.replaceChildren(list);
     this.list = list;
@@ -357,6 +325,10 @@ document.querySelectorAll("[data-type-control]").forEach((control) => {
 document.querySelector('[data-toggle="divider"]').addEventListener("change", (e) => {
   settings.divider = e.target.checked;
   Object.values(groups).forEach((g) => g.render());
+});
+document.querySelector('[data-toggle="hoverLine"]').addEventListener("change", (e) => {
+  settings.hoverLine = e.target.checked;
+  groups.a.render();
 });
 document.querySelector('[data-toggle="disabled"]').addEventListener("change", (e) => {
   settings.disabledTab = e.target.checked;
@@ -558,22 +530,8 @@ durationInput.addEventListener("change", () => replay());
 
 document.querySelector("[data-replay]").addEventListener("click", replay);
 
-// Hover toggles
-const hoverInputs = [...document.querySelectorAll("[data-hover]")];
-hoverInputs.forEach((input) => input.addEventListener("change", () => {
-  setMotion({ [input.dataset.hover]: input.checked });
-  syncMotionUI();
-}));
-
 function syncMotionUI() {
   const m = motionUI.current;
-  hoverInputs.forEach((input) => { input.checked = m[input.dataset.hover]; });
-  // Follow surface only exists in B — read/write B's value; disable when B isn't targeted
-  const followInput = document.querySelector('[data-hover="followSurface"]');
-  const bTargeted = motionUI.target !== "a";
-  followInput.checked = groups.b.motion.followSurface;
-  followInput.disabled = !bTargeted;
-  document.querySelector("[data-follow-wrap]").classList.toggle("is-disabled", !bTargeted);
   const e = currentEasing();
   syncTarget();
   syncMode();

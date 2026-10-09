@@ -400,27 +400,6 @@ button { font: inherit; color: inherit; }
 .tablist.no-transition .tab-slider,
 .tablist.no-transition .tab-indicator { transition: none !important; }
 
-/* Grow — each tab owns its bar. The new bar scales out from the centre with the
-   chosen curve; the old bar fades out quickly (no contraction), then resets its
-   scale once it's invisible. */
-.tablist { --grow-fade-out: 120ms; }
-.tablist.motion-grow .tab-indicator {
-  background: var(--indicator-color);
-  transform: scaleX(0);
-  opacity: 0;
-  transform-origin: 50% 50%;
-  transition:
-    opacity var(--grow-fade-out) ease-out,
-    transform 0s linear var(--grow-fade-out);
-}
-.tablist.motion-grow .tab[aria-selected="true"] .tab-indicator {
-  transform: scaleX(1);
-  opacity: 1;
-  transition:
-    transform var(--motion-dur) var(--motion-ease),
-    opacity 0s;
-}
-
 /* Stretch — JS drives each edge per frame, so no CSS transition on the bar */
 .tablist.motion-stretch .tab-slider { transition: none; }
 
@@ -559,9 +538,6 @@ button { font: inherit; color: inherit; }
 }
 .replay:hover { background: #2a2b2d; }
 
-.duration { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--comp-interaction-text-muted); }
-.duration output { width: 44px; color: var(--text-default); font-variant-numeric: tabular-nums; }
-.duration input[type="range"] { width: 120px; accent-color: var(--text-default); }
 
 .segmented button:focus-visible,
 .chip-button:focus-visible,

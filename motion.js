@@ -100,7 +100,7 @@ for (const e of EASINGS) {
   btn.append(svg, head, desc, source);
 
   btn.addEventListener("click", () => {
-    // Picking a curve also applies its recommended duration (still adjustable)
+    // Each curve carries its own duration
     setMotion({ easingId: e.id, duration: easingDuration(e) });
     syncMotionUI();
     replay();
@@ -172,14 +172,6 @@ document.querySelector("[data-copy]").addEventListener("click", async (e) => {
 const syncTarget = wireSegmented(document.querySelector("[data-motion-target]"), () => motionUI.target, (v) => { motionUI.target = v; });
 const syncMode = wireSegmented(document.querySelector("[data-motion-mode]"), () => motionUI.current.mode, (v) => setMotion({ mode: v }));
 
-const durationInput = document.querySelector("[data-duration]");
-const durationOut = document.querySelector("[data-duration-value]");
-durationInput.addEventListener("input", () => {
-  setMotion({ duration: Number(durationInput.value) });
-  syncMotionUI();
-});
-durationInput.addEventListener("change", () => replay());
-
 document.querySelector("[data-replay]").addEventListener("click", replay);
 
 function syncMotionUI() {
@@ -187,16 +179,14 @@ function syncMotionUI() {
   const e = currentEasing();
   syncTarget();
   syncMode();
-  durationInput.value = m.duration;
-  durationOut.textContent = `${m.duration}ms`;
   document.querySelector("[data-trigger-name]").textContent = e.name;
   curveSVG(document.querySelector("[data-trigger-thumb]"), e, 24, 20);
   optionEls.forEach(({ btn }, id) => btn.setAttribute("aria-checked", String(id === m.easingId)));
   document.querySelector("[data-preview-value]").textContent = easingCSS(e);
   document.querySelector("[data-preview-value]").title = easingCSS(e);
-  // Easing/duration don't matter with no animation
-  trigger.disabled = durationInput.disabled = m.mode === "none";
-  trigger.style.opacity = durationInput.parentElement.style.opacity = m.mode === "none" ? 0.4 : "";
+  // Easing doesn't matter with no animation
+  trigger.disabled = m.mode === "none";
+  trigger.style.opacity = m.mode === "none" ? 0.4 : "";
 }
 syncMotionUI();
 

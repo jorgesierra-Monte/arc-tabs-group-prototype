@@ -1,0 +1,154 @@
+/* ============================================================
+   In situ — Clients list (Figma 51274:1912)
+   Shares the app shell (nav, buttons, type) with in-situ.css.
+   ============================================================ */
+.clients-main {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  padding: 38px 28px 38px 32px;
+  max-width: 1195px;
+}
+.clients-title {
+  margin: 0;
+  height: 38px;
+  font-family: var(--font-serif);
+  font-variation-settings: "SERF" 100;
+  font-size: 48px;
+  line-height: 50px;
+  font-weight: 490;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+}
+
+/* Action needed cards */
+.action-needed { display: flex; flex-direction: column; gap: 40px; }
+.ac-cards { display: grid; grid-template-columns: repeat(3, 312px); gap: 32px; }
+.ac-card { display: flex; flex-direction: column; align-items: flex-start; }
+.ac-name {
+  margin: 8px 0 0;
+  font-family: var(--font-serif);
+  font-variation-settings: "SERF" 100;
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-loose);
+  color: var(--text-default);
+}
+.ac-notes {
+  margin: 16px 0 16px !important;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  color: var(--comp-interaction-text-muted);
+}
+
+/* Status tags (Tag V2 · small) */
+.in-situ .tag-neutral-sm,
+.in-situ .tag-warning-sm,
+.in-situ .tag-error-sm {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  min-width: 0;
+  padding: 0 6px;
+  border: 0;
+  border-radius: var(--radius-xsmall);
+  font-size: 10px;
+  line-height: 9px;
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-looser);
+  text-transform: uppercase;
+}
+.in-situ .tag-neutral-sm { background: var(--surface-emphasis); color: #000000; }
+.in-situ .tag-warning-sm { background: #d2b17f; color: #251d10; }
+.in-situ .tag-error-sm { background: #ff937c; color: #321914; }
+
+/* Tabs + search */
+.clients-list { display: flex; flex-direction: column; gap: 32px; margin-top: 64px; }
+.clients-toolbar { display: flex; align-items: flex-end; gap: 48px; }
+.clients-tabs { flex: none; }
+.clients-tabs .tab-group { min-height: 0; }
+.search-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  background: var(--surface-default);
+}
+.search-field input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: var(--ls-loose);
+  color: var(--text-default);
+}
+.search-field input::placeholder { color: var(--comp-interaction-text-muted); }
+.search-field:focus-within { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+
+/* Clients table */
+.clients-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.clients-table th:nth-child(1) { width: 331px; }
+.clients-table th:nth-child(2) { width: 344px; }
+.clients-table th:nth-child(3) { width: 246px; }
+.clients-table th {
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--sem-border-subtle);
+  text-align: left;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-loose);
+  color: var(--sem-text-muted);
+}
+.clients-table td {
+  height: 96px;
+  padding: 24px 16px;
+  border-bottom: 1px solid var(--sem-border-subtle);
+  vertical-align: middle;
+}
+.clients-table th:first-child,
+.clients-table td:first-child { padding-left: 0; }
+.cl-name {
+  display: block;
+  font-family: var(--font-serif);
+  font-variation-settings: "SERF" 100;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-loose);
+  color: var(--text-default);
+}
+.cl-date {
+  display: block;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: var(--ls-loose);
+  color: var(--text-default);
+}
+.cl-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: var(--ls-loose);
+  color: var(--sem-text-muted);
+}
+.cl-date + .cl-sub { margin-top: 6px; }
+.empty-state {
+  padding: 48px 0;
+  border-top: 1px solid var(--sem-border-subtle);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--sem-text-muted);
+}

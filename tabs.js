@@ -109,10 +109,9 @@ class TabGroup {
     const easing = EASINGS.find((e) => e.id === easingId);
     const list = this.list;
     list.classList.add("no-transition");
-    // Slide + Stretch share the travelling bar; Grow uses per-tab bars
+    // Slide + Stretch share the travelling bar
     list.classList.toggle("motion-slide", mode === "slide" || mode === "stretch");
     list.classList.toggle("motion-stretch", mode === "stretch");
-    list.classList.toggle("motion-grow", mode === "grow");
     list.style.setProperty("--motion-dur", `${duration}ms`);
     list.style.setProperty("--motion-ease", easingCSS(easing));
     this.placeSlider(false);
@@ -122,7 +121,7 @@ class TabGroup {
   }
 
   // Selected tab's indicator slot, relative to the tablist. Uses layout offsets,
-  // not getBoundingClientRect, so a mid-animation transform (Grow) can't skew it.
+  // not getBoundingClientRect, so a mid-animation transform can't skew it.
   slotBox(tabEl) {
     const ind = tabEl.querySelector(".tab-indicator");
     return {
@@ -169,14 +168,6 @@ class TabGroup {
     // cancel the selection animation that starts in the same frame.
     const inv = this.invert;
     inv.classList.add("no-anim");
-    if (mode === "grow" && animate) {
-      // start collapsed at the tab's centre, then open with the growing surface
-      this.setInvertClip({ x: to.x + to.w / 2, y: to.y, w: 0, h: to.h });
-      inv.offsetWidth;
-      inv.classList.remove("no-anim");
-      this.setInvertClip(to);
-      return;
-    }
     this.setInvertClip(to);
     inv.offsetWidth;
     inv.classList.remove("no-anim");

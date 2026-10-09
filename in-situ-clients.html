@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arc · Tab Group — in situ · Clients</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="in-situ.css" />
+  <link rel="stylesheet" href="in-situ-clients.css" />
+</head>
+<body class="in-situ">
+  <!-- Clients list (Figma 51274:1912) -->
+  <div class="app">
+    <nav class="app-nav" aria-label="Primary">
+      <div class="app-nav-top">
+        <a class="app-logo" href="#" aria-label="Grow Therapy"><img src="assets/in-situ/grow-logo.svg" width="63" height="32" alt="" /></a>
+        <ul class="app-nav-items">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Messages</a></li>
+          <li><a href="#" aria-current="page">Clients</a></li>
+          <li><a href="#">Appointments</a></li>
+          <li><a href="#">Payouts</a></li>
+          <li><a href="#">Community <img src="assets/in-situ/external.svg" width="12" height="12" alt="" /></a></li>
+        </ul>
+      </div>
+      <button type="button" class="app-profile">
+        <img class="app-avatar" src="assets/in-situ/avatar.png" width="32" height="32" alt="" />
+        <span class="app-profile-name">
+          <span class="app-profile-title">Tim Jones</span>
+          <span class="app-profile-sub">Legal Name</span>
+        </span>
+        <img src="assets/in-situ/nav-chevron.svg" width="14" height="8" alt="" />
+      </button>
+    </nav>
+
+    <main class="clients-main">
+      <h1 class="clients-title">Clients</h1>
+
+      <section class="action-needed">
+        <h2 class="subhead">Action needed</h2>
+        <div class="ac-cards">
+              <article class="ac-card">
+                <span class="tag tag-neutral-sm">Referral</span>
+                <h3 class="ac-name">Maria Perez-Fernandez</h3>
+                <p class="ac-notes">Work stress rising since promotion<br />Sleeping about 5 hours a night<br />Son Charlie (14) starting high school, some family tension at home</p>
+                <button type="button" class="btn btn-secondary btn-small">Schedule follow up</button>
+              </article>
+              <article class="ac-card">
+                <span class="tag tag-error-sm">Safety concern</span>
+                <h3 class="ac-name">Daunte Henderson</h3>
+                <p class="ac-notes">Work stress rising since promotion<br />Sleeping about 5 hours a night<br />Son Charlie (14) starting high school, some family tension at home</p>
+                <button type="button" class="btn btn-secondary btn-small">Schedule follow up</button>
+              </article>
+              <article class="ac-card">
+                <span class="tag tag-neutral-sm">Referral</span>
+                <h3 class="ac-name">Marigold Santos</h3>
+                <p class="ac-notes">Work stress rising since promotion<br />Sleeping about 5 hours a night<br />Son Charlie (14) starting high school, some family tension at home</p>
+                <button type="button" class="btn btn-secondary btn-small">Schedule follow up</button>
+              </article>
+        </div>
+      </section>
+
+      <section class="clients-list">
+        <div class="clients-toolbar">
+          <div class="clients-tabs" data-insitu-tabs data-label="Client lists" data-tab-order="all,action,scheduled,pending,archived"><div class="tab-group" data-tab-group></div></div>
+          <label class="search-field">
+            <img src="assets/in-situ/search.svg" width="24" height="24" alt="" />
+            <input type="search" placeholder="Search" aria-label="Search clients" />
+          </label>
+        </div>
+        <div class="clients-views">
+            <div class="tab-panel-view" data-view="all" data-label="All active" role="tabpanel">
+              <table class="clients-table">
+                <thead><tr><th>Client name</th><th>Last appointment</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><span class="cl-name">Vikash Patel</span><span class="cl-sub">He/him</span></td>
+                    <td><span class="cl-date">March 23, 2023</span><span class="cl-sub">3:00 - 4:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Morgan Lai</span><span class="cl-sub">She/they・New client</span></td>
+                    <td><span class="cl-date">March 30, 2023</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-neutral-sm">Referral recommended</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Ann Lee</span><span class="cl-sub">She/they・New client</span></td>
+                    <td><span class="cl-date">Feb 30, 2023</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Chase Bowers</span><span class="cl-sub">He/him</span></td>
+                    <td><span class="cl-date">Jan 30, 2023</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">David Davis</span><span class="cl-sub">He/him</span></td>
+                    <td><span class="cl-date">Dec 30, 2022</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Emmanuelle Barnardiston</span><span class="cl-sub">She/they・New client</span></td>
+                    <td><span class="cl-date">Dec 30, 2022</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-neutral-sm">Referral recommended</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-panel-view" data-view="action" data-label="Action needed" role="tabpanel" hidden>
+              <table class="clients-table">
+                <thead><tr><th>Client name</th><th>Last appointment</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><span class="cl-name">Vikash Patel</span><span class="cl-sub">He/him</span></td>
+                    <td><span class="cl-date">March 23, 2023</span><span class="cl-sub">3:00 - 4:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Ann Lee</span><span class="cl-sub">She/they・New client</span></td>
+                    <td><span class="cl-date">Feb 30, 2023</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Chase Bowers</span><span class="cl-sub">He/him</span></td>
+                    <td><span class="cl-date">Jan 30, 2023</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">David Davis</span><span class="cl-sub">He/him</span></td>
+                    <td><span class="cl-date">Dec 30, 2022</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-panel-view" data-view="scheduled" data-label="Scheduled" role="tabpanel" hidden>
+              <table class="clients-table">
+                <thead><tr><th>Client name</th><th>Last appointment</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><span class="cl-name">Vikash Patel</span><span class="cl-sub">He/him</span></td>
+                    <td><span class="cl-date">March 23, 2023</span><span class="cl-sub">3:00 - 4:30 PM PST</span></td>
+                    <td><span class="tag tag-warning-sm">Follow up needed</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Morgan Lai</span><span class="cl-sub">She/they・New client</span></td>
+                    <td><span class="cl-date">March 30, 2023</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-neutral-sm">Referral recommended</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-panel-view" data-view="pending" data-label="Pending" role="tabpanel" hidden>
+              <table class="clients-table">
+                <thead><tr><th>Client name</th><th>Last appointment</th><th>Status</th><th>Action</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><span class="cl-name">Morgan Lai</span><span class="cl-sub">She/they・New client</span></td>
+                    <td><span class="cl-date">March 30, 2023</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-neutral-sm">Referral recommended</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                  <tr>
+                    <td><span class="cl-name">Emmanuelle Barnardiston</span><span class="cl-sub">She/they・New client</span></td>
+                    <td><span class="cl-date">Dec 30, 2022</span><span class="cl-sub">4:00 - 5:30 PM PST</span></td>
+                    <td><span class="tag tag-neutral-sm">Referral recommended</span></td>
+                    <td><a class="text-link" href="#">Schedule client</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tab-panel-view" data-view="archived" data-label="Archived" role="tabpanel" hidden>
+              <p class="empty-state">No archived clients.</p>
+            </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="controls">
+    <div class="easing-popover" id="easing-popover" hidden>
+      <div class="easing-scale" aria-hidden="true"><span>Subtle</span><span class="easing-scale-line"></span><span>Expressive</span></div>
+      <div class="easing-cards" data-easing-list role="radiogroup" aria-label="Easing curve"></div>
+      <div class="easing-value">
+        <code data-preview-value></code>
+        <button type="button" class="copy" data-copy>Copy</button>
+      </div>
+    </div>
+
+    <!-- Direction switch -->
+    <div class="bar" role="toolbar" aria-label="Direction">
+      <span class="bar-title">Direction</span>
+      <div class="segmented" data-direction-control role="radiogroup" aria-label="Tab group direction">
+        <button type="button" role="radio" data-value="a">A · Text hover</button>
+        <button type="button" role="radio" data-value="b">B · Surface hover</button>
+        <button type="button" role="radio" data-value="c">C · Inverse selected</button>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <div class="bar-group toggles">
+        <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <nav class="page-links" aria-label="Prototype pages">
+        <a class="page-link" href="in-situ-clients.html" aria-current="page">Clients</a>
+        <a class="page-link" href="in-situ.html">Client profile</a>
+        <a class="page-link" href="in-situ-session.html">Session</a>
+      </nav>
+    </div>
+
+    <!-- Motion controls -->
+    <div class="bar motion-bar" role="toolbar" aria-label="Motion controls">
+      <span class="bar-title">Motion</span>
+      <div class="segmented" data-motion-mode role="radiogroup" aria-label="Indicator animation">
+        <button type="button" role="radio" data-value="none">None</button>
+        <button type="button" role="radio" data-value="slide">Slide</button>
+        <button type="button" role="radio" data-value="stretch">Stretch</button>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <button type="button" class="chip-button" data-easing-trigger aria-haspopup="true" aria-expanded="false" aria-controls="easing-popover">
+        <svg data-trigger-thumb width="24" height="20" viewBox="0 0 24 20" aria-hidden="true"></svg>
+        <span class="easing-trigger-name" data-trigger-name></span>
+        <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 6.5 5 3.5 8 6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="replay" data-replay title="Select the next tab (R)">
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg>
+        Replay
+      </button>
+    </div>
+  </div>
+
+  <script src="easings.js"></script>
+  <script src="tabs.js"></script>
+  <script src="in-situ.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>

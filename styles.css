@@ -105,51 +105,8 @@ button { font: inherit; color: inherit; }
 }
 .tab-panel strong { color: var(--text-default); font-weight: var(--fw-medium); }
 
-.section-label {
-  margin: 160px 0 12px; /* states are secondary — give the animated tabs room */
-  font-size: 12px;
-  font-weight: var(--fw-medium);
-  letter-spacing: var(--ls-looser);
-  text-transform: uppercase;
-  color: var(--comp-interaction-text-muted);
-}
-
-.states {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-}
-.state-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 24px 12px 12px;
-  border-radius: var(--radius-small);
-  background: var(--surface-default);
-  border: var(--bw-default) solid var(--surface-emphasis);
-}
-.state-specimen {
-  display: flex;
-  align-items: flex-start;
-  min-height: 38px;
-  pointer-events: none;
-}
-.state-card.is-empty {
-  justify-content: center;
-  border-style: dashed;
-  background: transparent;
-}
-.state-card.is-empty .state-name { max-width: 120px; }
-.state-name {
-  text-align: center;
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--comp-interaction-text-muted);
-}
-
 /* Selection indicator colour — an underline in A/B, a surface in C */
-.tab-group, .states {
+.tab-group {
   --indicator-color: var(--comp-interaction-border-selected);
   --indicator-disabled: var(--comp-interaction-border-disabled);
 }
@@ -252,11 +209,10 @@ button { font: inherit; color: inherit; }
 }
 
 /* ---- States (shared) ---- */
-/* Hover — only on hover-capable pointers; .is-hover forces it for the specimen grid */
+/* Hover — only on hover-capable pointers */
 @media (hover: hover) {
   .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover { color: var(--comp-interaction-text-hover); }
 }
-.tab.is-hover { color: var(--comp-interaction-text-hover); }
 
 /* Selected */
 .tab[aria-selected="true"] {
@@ -280,8 +236,7 @@ button { font: inherit; color: inherit; }
 .tab[aria-disabled="true"][aria-selected="true"] .tab-indicator { background: var(--indicator-disabled); }
 
 /* Focus — 2px ink ring (Arc focus-ring); radius = base + 4 */
-.tab:focus-visible .tab-content::after,
-.tab.is-focus .tab-content::after {
+.tab:focus-visible .tab-content::after {
   content: "";
   position: absolute;
   inset: -4px;
@@ -328,7 +283,6 @@ button { font: inherit; color: inherit; }
     background: var(--comp-interaction-surface-hover);
   }
 }
-.dir-b .tab.is-hover .tab-content::before { background: var(--comp-interaction-surface-hover); }
 
 /* ============================================================
    Direction C — Underline hover  (Figma "Tab Item - 3", 51197:16683)
@@ -365,7 +319,6 @@ button { font: inherit; color: inherit; }
 }
 .dir-c .tab-slider { border-radius: var(--radius-xsmall); z-index: 0; }
 /* Hover line: always part of C's design */
-.dir-c .tab.is-hover:not([aria-selected="true"]) .tab-hover-line { display: block; }
 @media (hover: hover) {
   .dir-c .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-hover-line { display: block; }
 }

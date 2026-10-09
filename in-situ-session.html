@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arc · Tab Group — in situ · Session</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="in-situ.css" />
+  <link rel="stylesheet" href="in-situ-session.css" />
+</head>
+<body class="in-situ session-page">
+  <!-- Session screen (Figma g4RLaaGHuERtGIcpEnSg9u · 373:45934), dark mode, 1440×940 artboard -->
+  <div class="artboard-wrap">
+    <div class="session mode-dark" data-artboard data-width="1440" data-height="940">
+      <header class="session-top">
+        <div class="session-brand">
+          <img src="assets/session/grow-logo-white.svg" width="63" height="32" alt="Grow Therapy" />
+          <span class="tag-light">Transcribing</span>
+        </div>
+        <div class="session-help">
+          <img src="assets/session/globe.svg" width="20" height="20" alt="" />
+          <a href="#">Need help?</a>
+        </div>
+      </header>
+
+      <div class="session-body">
+        <div class="video">
+          <img class="video-feed" src="assets/session/client-video.png" alt="" />
+          <div class="video-shade" aria-hidden="true"></div>
+          <div class="video-pip"><img src="assets/session/provider.png" alt="" /></div>
+          <span class="video-name">Vikash Patel (he/his)</span>
+        </div>
+
+        <section class="dialog" aria-labelledby="session-title">
+          <div class="dialog-head">
+            <div class="dialog-title">
+              <h1 id="session-title">Follow up with<br />Vikash Patel</h1>
+              <p class="dialog-time"><img src="assets/session/time.svg" width="28" height="28" alt="" />10:00 am</p>
+            </div>
+            <button type="button" class="dialog-close" aria-label="Close"><img src="assets/session/close.svg" width="36" height="36" alt="" /></button>
+          </div>
+
+          <!-- The Chip group in the design is replaced by the tab group under test -->
+          <div class="dialog-tabs" data-insitu-tabs data-label="Session sections" data-tab-order="overview,activity,treatment,appointments"><div class="tab-group" data-tab-group></div></div>
+
+          <div class="dialog-scroll">
+            <div class="tab-panel-view" data-view="treatment" data-label="Treatment" role="tabpanel">
+              <div class="progress">
+                <h2 class="progress-title">Progress</h2>
+                <table class="progress-table">
+                  <thead>
+                    <tr><th>Symptom</th><th>Previous</th><th>Latest</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Depression</td><td><b>Minimal</b><span>Nov 12</span></td><td><b>Mild <img src="assets/session/arrow-up.svg" width="11" height="13" alt="up" /></b><span>Dec 21</span></td></tr>
+                    <tr><td>Anxiety</td><td><b>Severe</b><span>Nov 12</span></td><td><b>Moderate <img src="assets/session/arrow-down.svg" width="11" height="13" alt="down" /></b><span>Dec 21</span></td></tr>
+                    <tr><td>Therapeutic relationship</td><td><b>Weak</b><span>Nov 12</span></td><td><b>Strong <img src="assets/session/arrow-up.svg" width="11" height="13" alt="up" /></b><span>Dec 21</span></td></tr>
+                    <tr><td>Quality of life</td><td><b>Fair</b><span>Nov 12</span></td><td><b>Fair</b><span>Dec 21</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <button type="button" class="collapse">Changes since previous results <img src="assets/session/expand.svg" width="24" height="24" alt="" /></button>
+            </div>
+
+            <!-- Other tabs: light placeholder content so switching feels real -->
+            <div class="tab-panel-view" data-view="overview" data-label="Overview" role="tabpanel" hidden>
+              <div class="progress">
+                <h2 class="progress-title">Today's session</h2>
+                <div class="dark-row"><span>Session type</span><span class="muted">Follow-up · 50 min</span></div>
+                <div class="dark-row"><span>Last session</span><span class="muted">Dec 21</span></div>
+                <div class="dark-row"><span>Treatment goal</span><span class="muted">Reduce anxiety at work</span></div>
+              </div>
+            </div>
+            <div class="tab-panel-view" data-view="activity" data-label="Client Activity" role="tabpanel" hidden>
+              <div class="progress">
+                <h2 class="progress-title">Client activity</h2>
+                <div class="dark-row"><span>Completed PHQ-9</span><span class="muted">Dec 20</span></div>
+                <div class="dark-row"><span>Sent a message</span><span class="muted">Dec 18</span></div>
+                <div class="dark-row"><span>Journal entry shared</span><span class="muted">Dec 15</span></div>
+              </div>
+            </div>
+            <div class="tab-panel-view" data-view="appointments" data-label="Appointments" role="tabpanel" hidden>
+              <div class="progress">
+                <h2 class="progress-title">Appointments</h2>
+                <div class="dark-row"><span>Follow-up</span><span class="muted">Jan 4 · 10:00 am</span></div>
+                <div class="dark-row"><span>Follow-up</span><span class="muted">Jan 11 · 10:00 am</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="session-bar">
+        <button type="button" class="pill pill-dark">Clients</button>
+        <div class="call-controls">
+          <button type="button" aria-label="Microphone"><img src="assets/session/ctrl-microphone.svg" width="42" height="42" alt="" /></button>
+          <button type="button" aria-label="Camera"><img src="assets/session/ctrl-video.svg" width="42" height="42" alt="" /></button>
+          <button type="button" aria-label="Chat"><img src="assets/session/ctrl-message.svg" width="42" height="42" alt="" /></button>
+          <button type="button" aria-label="Share screen"><img src="assets/session/ctrl-airplay.svg" width="42" height="42" alt="" /></button>
+          <button type="button" aria-label="Notes"><img src="assets/session/ctrl-book.svg" width="42" height="42" alt="" /></button>
+          <button type="button" aria-label="Measures"><img src="assets/session/ctrl-poll.svg" width="42" height="42" alt="" /></button>
+          <button type="button" aria-label="Pause transcription"><img src="assets/session/ctrl-pause.svg" width="42" height="42" alt="" /></button>
+          <button type="button" aria-label="Settings"><img src="assets/session/ctrl-gear.svg" width="42" height="42" alt="" /></button>
+        </div>
+        <button type="button" class="pill pill-light">Complete session</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="easing-popover" id="easing-popover" hidden>
+      <div class="easing-scale" aria-hidden="true"><span>Subtle</span><span class="easing-scale-line"></span><span>Expressive</span></div>
+      <div class="easing-cards" data-easing-list role="radiogroup" aria-label="Easing curve"></div>
+      <div class="easing-value">
+        <code data-preview-value></code>
+        <button type="button" class="copy" data-copy>Copy</button>
+      </div>
+    </div>
+
+    <div class="bar" role="toolbar" aria-label="Direction">
+      <span class="bar-title">Direction</span>
+      <div class="segmented" data-direction-control role="radiogroup" aria-label="Tab group direction">
+        <button type="button" role="radio" data-value="a">A · Text hover</button>
+        <button type="button" role="radio" data-value="b">B · Surface hover</button>
+        <button type="button" role="radio" data-value="c">C · Inverse selected</button>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <div class="bar-group toggles">
+        <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <nav class="page-links" aria-label="Prototype pages">
+        <a class="page-link" href="index.html">Compare</a>
+        <a class="page-link" href="in-situ.html">Client profile</a>
+        <a class="page-link" href="in-situ-session.html" aria-current="page">Session</a>
+      </nav>
+    </div>
+
+    <div class="bar motion-bar" role="toolbar" aria-label="Motion controls">
+      <span class="bar-title">Motion</span>
+      <div class="segmented" data-motion-mode role="radiogroup" aria-label="Indicator animation">
+        <button type="button" role="radio" data-value="none">None</button>
+        <button type="button" role="radio" data-value="slide">Slide</button>
+        <button type="button" role="radio" data-value="stretch">Stretch</button>
+        <button type="button" role="radio" data-value="grow">Grow</button>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <button type="button" class="chip-button" data-easing-trigger aria-haspopup="true" aria-expanded="false" aria-controls="easing-popover">
+        <svg data-trigger-thumb width="24" height="20" viewBox="0 0 24 20" aria-hidden="true"></svg>
+        <span class="easing-trigger-name" data-trigger-name></span>
+        <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 6.5 5 3.5 8 6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <label class="duration">
+        <span>Duration</span>
+        <input type="range" min="100" max="1200" step="25" data-duration />
+        <output data-duration-value></output>
+      </label>
+      <button type="button" class="replay" data-replay title="Select the next tab (R)">
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg>
+        Replay
+      </button>
+    </div>
+  </div>
+
+  <script src="easings.js"></script>
+  <script src="tabs.js"></script>
+  <script src="in-situ.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>

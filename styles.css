@@ -728,4 +728,14 @@ button { font: inherit; color: inherit; }
 }
 
 /* Link between prototype pages (in the controls bar) */
-.page-link { font-size: 12px; line-height: 16px; color: var(--text-default); padding: 6px 8px; }
+.page-links { display: flex; gap: 2px; }
+.page-link {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--comp-interaction-text-muted);
+  padding: 6px 8px;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+}
+.page-link:hover { color: var(--text-default); background: var(--surface-subtle); }
+.page-link[aria-current="page"] { color: var(--text-default); font-weight: var(--fw-medium); }

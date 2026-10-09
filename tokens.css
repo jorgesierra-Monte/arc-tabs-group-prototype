@@ -84,3 +84,33 @@
   --dur-base: 200ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
+
+/* ---- Dark mode (Arc "grow therapy" collection · dark) ----
+   Resolved from the Tab Item components in a dark-mode context. */
+.mode-dark {
+  --surface-default: #010204;
+  --surface-emphasis: #313132;                /* tab rail */
+  --comp-interaction-surface-hover: #2c2b2b;
+  --comp-interaction-surface-selected: #ffffff;
+  --comp-interaction-surface-disabled: #000000;
+
+  --text-default: #ffffff;
+  --comp-interaction-text-muted: #c6c7c7;
+  --comp-interaction-text-hover: #ffffff;
+  --comp-interaction-text-disabled: #474848;
+  --comp-interaction-text-selected: #000000;
+
+  --icon-default: #ffffff;
+  --comp-interaction-icon-disabled: #474848;
+  --comp-interaction-icon-inverse: #010204;
+
+  --comp-interaction-border-selected: #ffffff;
+  --comp-interaction-border-disabled: #403f3e;
+  --focus-ring: #e8f02c;                      /* lime ring on dark */
+
+  --comp-status-surface-neutral-light: #000000;
+  --comp-status-border-neutral-light: #313132;
+  --comp-status-text-neutral-light: #ffffff;
+  --comp-status-surface-subtle: #403f3e;
+  --comp-status-text-subtle: #ffffff;
+}

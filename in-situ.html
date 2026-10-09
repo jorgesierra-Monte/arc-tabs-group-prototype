@@ -52,13 +52,13 @@
             <p class="client-pronouns">She/her</p>
           </div>
 
-          <div class="client-tabs" data-direction="a">
+          <div class="client-tabs" data-insitu-tabs data-label="Client sections" data-tab-order="overview,intersession,treatment,forms">
             <div class="tab-group" data-tab-group></div>
           </div>
 
           <div class="tab-panels" data-panels>
             <!-- Treatment (as designed) -->
-            <div class="tab-panel-view" data-view="treatment" role="tabpanel">
+            <div class="tab-panel-view" data-view="treatment" data-label="Treatment" role="tabpanel">
               <section class="block">
                 <h2 class="subhead">Clinical considerations</h2>
                 <div class="action-item">
@@ -102,7 +102,7 @@
             </div>
 
             <!-- Other tabs: light placeholder content so switching feels real -->
-            <div class="tab-panel-view" data-view="overview" role="tabpanel" hidden>
+            <div class="tab-panel-view" data-view="overview" data-label="Overview" role="tabpanel" hidden>
               <section class="block">
                 <h2 class="subhead">Upcoming</h2>
                 <div class="list-row"><span>Follow-up appointment</span><span class="step-date">Jun 16・9:30 AM EDT</span></div>
@@ -113,7 +113,7 @@
                 <p class="body-muted">Weekly sessions since January. Focus on work-related stress and sleep. Last measured PHQ-9: 8 (mild).</p>
               </section>
             </div>
-            <div class="tab-panel-view" data-view="intersession" role="tabpanel" hidden>
+            <div class="tab-panel-view" data-view="intersession" data-label="Intersession care" role="tabpanel" hidden>
               <section class="block">
                 <h2 class="subhead">Between sessions</h2>
                 <div class="list-row"><span>Sleep journal shared</span><span class="step-date">Jun 7</span></div>
@@ -121,7 +121,7 @@
                 <div class="list-row"><span>Check-in message</span><span class="step-date">Jun 2</span></div>
               </section>
             </div>
-            <div class="tab-panel-view" data-view="forms" role="tabpanel" hidden>
+            <div class="tab-panel-view" data-view="forms" data-label="Forms and files" role="tabpanel" hidden>
               <section class="block">
                 <h2 class="subhead">Forms and files</h2>
                 <div class="list-row"><span>Intake questionnaire</span><span class="step-date">Completed Jan 8</span></div>
@@ -184,7 +184,11 @@
         <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
       </div>
       <span class="bar-divider" aria-hidden="true"></span>
-      <a class="page-link" href="index.html">Compare all</a>
+      <nav class="page-links" aria-label="Prototype pages">
+        <a class="page-link" href="index.html">Compare</a>
+        <a class="page-link" href="in-situ.html" aria-current="page">Client profile</a>
+        <a class="page-link" href="in-situ-session.html">Session</a>
+      </nav>
     </div>
 
     <!-- Motion controls -->

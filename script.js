@@ -80,8 +80,9 @@ class TabGroup {
     this.render();
 
     // Keep the sliding bar glued to its tab when fonts load or the layout reflows
-    new ResizeObserver(() => this.placeSlider(false)).observe(this.mount);
-    document.fonts.ready.then(() => this.placeSlider(false));
+    const relayout = () => { this.placeSlider(false); this.placeInvert(false); };
+    new ResizeObserver(relayout).observe(this.mount);
+    document.fonts.ready.then(relayout);
   }
 
   setMotion(patch) {
@@ -101,22 +102,72 @@ class TabGroup {
     list.style.setProperty("--motion-dur", `${duration}ms`);
     list.style.setProperty("--motion-ease", easingCSS(easing));
     this.placeSlider(false);
+    this.placeInvert(false);
     list.offsetWidth; // flush so the mode switch itself doesn't animate
     list.classList.remove("no-transition");
   }
 
-  // Selected tab's indicator slot, relative to the tablist
+  // Selected tab's indicator slot, relative to the tablist. Uses layout offsets,
+  // not getBoundingClientRect, so a mid-animation transform (Grow) can't skew it.
   slotBox(tabEl) {
-    const listBox = this.list.getBoundingClientRect();
-    const box = tabEl.querySelector(".tab-indicator").getBoundingClientRect();
-    return { x: box.left - listBox.left, y: box.top - listBox.top, w: box.width, h: box.height };
+    const ind = tabEl.querySelector(".tab-indicator");
+    return {
+      x: tabEl.offsetLeft + ind.offsetLeft,
+      y: tabEl.offsetTop + ind.offsetTop,
+      w: ind.offsetWidth,
+      h: ind.offsetHeight,
+    };
   }
 
   setSlider({ x, y, w, h }) {
     this.slider.style.width = `${w}px`;
     this.slider.style.height = `${h}px`; // matches the slot's bar thickness
     this.slider.style.transform = `translate(${x}px, ${y}px)`;
+    this.setInvertClip({ x, y, w, h }); // inverted labels travel with the bar
   }
+
+  // ---- Inverted labels (C): a white copy of the tabs, clipped to the selected
+  // surface, so text is white exactly where the black surface is — mid-slide too.
+  syncInvert() {
+    if (!this.invert) return;
+    const clones = [...this.list.querySelectorAll(":scope > .tab")].map((tab) => {
+      const c = tab.cloneNode(true);
+      c.removeAttribute("id");
+      c.tabIndex = -1;
+      return c;
+    });
+    this.invert.replaceChildren(...clones);
+  }
+
+  setInvertClip({ x, y, w, h }) {
+    if (!this.invert) return;
+    const W = this.list.offsetWidth, H = this.list.offsetHeight;
+    this.invert.style.clipPath =
+      `inset(${y}px ${W - x - w}px ${H - y - h}px ${x}px round var(--radius-xsmall))`;
+  }
+
+  placeInvert(animate = true) {
+    if (!this.invert) return;
+    const mode = this.motion.mode;
+    const to = this.slotBox(this.currentTab());
+    if ((mode === "slide" || mode === "stretch") && animate) return; // placeSlider drives it
+    // Only this layer pauses its transition — pausing the whole list would also
+    // cancel the selection animation that starts in the same frame.
+    const inv = this.invert;
+    inv.classList.add("no-anim");
+    if (mode === "grow" && animate) {
+      // start collapsed at the tab's centre, then open with the growing surface
+      this.setInvertClip({ x: to.x + to.w / 2, y: to.y, w: 0, h: to.h });
+      inv.offsetWidth;
+      inv.classList.remove("no-anim");
+      this.setInvertClip(to);
+      return;
+    }
+    this.setInvertClip(to);
+    inv.offsetWidth;
+    inv.classList.remove("no-anim");
+  }
+
 
   // Move the shared bar onto the selected tab's own indicator slot
   placeSlider(animate = true, fromTab = null) {
@@ -201,9 +252,20 @@ class TabGroup {
     slider.setAttribute("aria-hidden", "true");
     list.append(slider);
 
+    // C inverts the selected label onto a black surface
+    this.invert = null;
+    if (this.key === "c") {
+      this.invert = document.createElement("div");
+      this.invert.className = "tab-invert";
+      this.invert.setAttribute("aria-hidden", "true");
+      this.invert.inert = true;
+      list.append(this.invert);
+    }
+
     this.mount.replaceChildren(list);
     this.list = list;
     this.slider = slider;
+    this.syncInvert();
     this.applyMotion();
     this.updatePanel();
     if (hadFocus) this.currentTab().focus();
@@ -228,7 +290,9 @@ class TabGroup {
     next.setAttribute("aria-selected", "true");
     next.tabIndex = 0;
     if (focus) next.focus();
+    this.syncInvert();
     this.placeSlider(true, prev);
+    this.placeInvert(true);
     this.updatePanel();
   }
 

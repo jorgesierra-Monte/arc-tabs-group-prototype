@@ -16,16 +16,19 @@
   --surface-subtle: #f4f2f0;                  /* surface/subtle */
   --surface-emphasis: #e6e2de;                /* surface/emphasis (tab rail) */
   --comp-interaction-surface-hover: #f1efec;  /* comp/interaction/surface/hover */
+  --surface-inverse: #010204;                 /* surface/inverse */
 
   /* ---- Text ---- */
   --text-default: #010204;                    /* text/default */
   --comp-interaction-text-muted: #5f5f60;     /* comp/interaction/text/muted */
   --comp-interaction-text-hover: #010204;     /* comp/interaction/text/hover */
   --comp-interaction-text-disabled: #777878;  /* comp/interaction/text/disabled */
+  --text-inverse: #ffffff;                    /* text/inverse */
 
   /* ---- Icon ---- */
   --icon-default: #010204;                    /* icon/default */
   --comp-interaction-icon-disabled: #777878;  /* comp/interaction/icon/disabled */
+  --icon-inverse: #ffffff;                    /* icon/inverse */
 
   /* ---- Border ---- */
   --comp-interaction-border-selected: #000000; /* comp/interaction/border/selected */

@@ -285,12 +285,12 @@ button { font: inherit; color: inherit; }
 /* ============================================================
    Direction C — Underline hover  (Figma "Tab Item - 3", 51197:16683)
    32px tall, 6/16 padding, tabs edge to edge. Hover = label darkens +
-   2px black line across the full tab. Selected = soft surface (radius
-   xsmall) behind an emphasis label, no line. Selected disabled has no
+   2px black line across the full tab. Selected = black inverse surface
+   (radius xsmall) behind a white emphasis label, no line. Selected disabled has no
    surface. Icons are the 20px Small size in every state.
    ============================================================ */
 .dir-c {
-  --indicator-color: var(--comp-interaction-surface-hover);
+  --indicator-color: var(--surface-inverse);
   --indicator-disabled: transparent;
 }
 .dir-c .tablist { gap: var(--space-0); }
@@ -321,6 +321,29 @@ button { font: inherit; color: inherit; }
 @media (hover: hover) {
   .dir-c .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-hover-line { display: block; }
 }
+
+/* Inverted labels — a white copy of C's tabs, clipped to the black surface */
+.tab-invert {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-0);
+  pointer-events: none;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--motion-dur) var(--motion-ease);
+}
+.tablist.motion-stretch .tab-invert,
+.tablist.no-transition .tab-invert,
+.tab-invert.no-anim { transition: none !important; }
+.tab-invert .tab,
+.tab-invert .tab[aria-selected="true"] { color: var(--text-inverse); }
+.tab-invert .tab .tab-label { color: inherit !important; opacity: 1 !important; }
+.tab-invert .tab .tab-icon { background-color: var(--icon-inverse) !important; }
+.tab-invert .tab-indicator,
+.tab-invert .tab-hover-line,
+.tab-invert .tab-content::after { display: none !important; }
 
 /* ============================================================
    Selection motion (live tab groups only)

@@ -717,3 +717,51 @@ button { font: inherit; color: inherit; }
 /* Current page: same black pill as the selected segmented options */
 .page-link[aria-current="page"] { color: var(--surface-default); background: var(--text-default); }
 .page-link[aria-current="page"]:hover { color: var(--surface-default); background: var(--text-default); }
+
+/* ============================================================
+   In-situ pages: controls split to the bottom corners, dark theme
+   (Direction bottom-left, Motion bottom-right) so they read apart
+   from the screen under test.
+   ============================================================ */
+.in-situ .controls {
+  /* dark panel palette */
+  --surface-default: #1c1d1d;
+  --surface-subtle: #2c2b2b;
+  --surface-emphasis: #313132;
+  --text-default: #ffffff;
+  --comp-interaction-text-muted: #c6c7c7;
+  --comp-interaction-surface-hover: #3a3939;
+  --hairline-soft: #555452;
+  --focus-ring: #e8f02c;
+  color: var(--text-default);
+
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  transform: none;
+  width: auto;
+  max-width: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+}
+.in-situ .controls > * { pointer-events: auto; }
+.in-situ .controls .bar {
+  border-color: #313132;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+.in-situ .controls .motion-bar { margin-left: auto; }
+.in-situ .controls .replay:hover { background: #e6e2de; }
+.in-situ .controls .switch input:checked + span::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 5.2 4.1 7.3 8 3' fill='none' stroke='%231c1d1d' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+/* Easing picker opens above the Motion panel, aligned to the right */
+.in-situ .controls .easing-popover {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  border-color: #313132;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 16px 40px rgba(0, 0, 0, 0.32);
+}

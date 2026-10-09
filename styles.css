@@ -289,7 +289,7 @@ button { font: inherit; color: inherit; }
    32px tall, 6/16 padding, tabs edge to edge. Hover = label darkens +
    2px black line across the full tab. Selected = soft surface (radius
    xsmall) behind an emphasis label, no line. Selected disabled has no
-   surface. Icons are 20px.
+   surface. Icons grow 16 → 20px on hover/selected.
    ============================================================ */
 .dir-c {
   --indicator-color: var(--comp-interaction-surface-hover);
@@ -302,12 +302,25 @@ button { font: inherit; color: inherit; }
   padding: var(--space-125) var(--space-300);
   z-index: 1;
 }
-.dir-c .tab-content.has-icon { gap: var(--space-100); }
+/* With icon: 12px leading padding. The icon sits in a fixed 20px slot so the tab
+   never changes width: XSmall (16px) at rest/disabled, Small (20px) on hover and
+   when selected — both left-aligned at 12px, label always at 36px. */
+.dir-c .tab-content.has-icon { gap: var(--space-100); padding-left: var(--space-200); }
 .dir-c .tab-icon {
   width: 20px;
   height: 20px;
-  -webkit-mask-size: 20px 20px;
-          mask-size: 20px 20px;
+  -webkit-mask: url("assets/icons/settings.svg") 0 50% / 16px 16px no-repeat;
+          mask: url("assets/icons/settings.svg") 0 50% / 16px 16px no-repeat;
+}
+.dir-c .tab[aria-selected="true"]:not([aria-disabled="true"]) .tab-icon {
+  -webkit-mask: url("assets/icons/settings-20.svg") 0 50% / 20px 20px no-repeat;
+          mask: url("assets/icons/settings-20.svg") 0 50% / 20px 20px no-repeat;
+}
+@media (hover: hover) {
+  .dir-c .tab:not([aria-disabled="true"]):hover .tab-icon {
+    -webkit-mask: url("assets/icons/settings-20.svg") 0 50% / 20px 20px no-repeat;
+            mask: url("assets/icons/settings-20.svg") 0 50% / 20px 20px no-repeat;
+  }
 }
 /* The selected surface fills the whole tab, behind the label */
 .dir-c .tab-indicator {

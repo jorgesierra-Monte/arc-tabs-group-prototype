@@ -27,7 +27,7 @@ function buildTab(tab, type, { selected, disabled, cls, interactive, groupId }) 
   }
 
   const content = document.createElement("span");
-  content.className = "tab-content" + (type === "icon" ? " has-icon" : "");
+  content.className = "tab-content" + (type === "icon" ? " has-icon" : "") + (type === "count" ? " has-count" : "");
 
   if (type === "icon") {
     const icon = document.createElement("span");

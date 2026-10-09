@@ -89,7 +89,7 @@ button { font: inherit; color: inherit; }
   padding: 32px 0 0;
   overflow-x: auto;
 }
-/* Same height in A (32px), B (34px) and C (53px with its divider gap) so both halves line up across the split */
+/* Same height in A (32px), B (50px) and C (53px with its divider gap) so both halves line up across the split */
 .tab-group { min-height: 53px; }
 .tab-panel {
   margin-top: 24px;
@@ -251,25 +251,32 @@ button { font: inherit; color: inherit; }
 .dir-a .tab-content { height: 20px; }
 /* Figma: 0-height line with a 2px OUTSIDE stroke drawn upward → total height stays 32px */
 .dir-a .tab-indicator { margin-top: calc(-1 * var(--bw-thick)); }
+/* Selected bar has rounded ends (Figma "Bar", radius xsmall) */
+.dir-a .tab-indicator,
+.dir-a .tab-slider { border-radius: var(--radius-xsmall); }
 
 /* ============================================================
    Direction B — Surface hover  (Figma "Tab Item - 2", 50922:13721)
-   Content 32px tall, 6/16 padding. Tabs sit edge to edge (0 gap), so the
-   padding spaces the labels 32px apart and hover surfaces meet. The 2px
-   underline sits flush under the surface (34px total), inset 16px to the
-   label width. Selected tabs also take the hover surface ("Hover selected").
+   Content 44px tall, 16px side padding (12px trailing with a count, 12px
+   leading with an icon), 6px between label and count/icon. Tabs sit edge
+   to edge. Hover surface radius small (8px). The 2px underline sits 4px
+   below the surface (50px total), inset 16px from both tab edges.
+   Selected tabs also take the hover surface ("Hover selected").
    ============================================================ */
 .dir-b .tablist { gap: var(--space-0); } /* tabs sit edge to edge; padding does the spacing */
-.dir-b .tab { gap: var(--space-0); }
+.dir-b .tab { gap: var(--space-100); }
 .dir-b .tab-content {
-  height: 32px;
-  padding: var(--space-125) var(--space-300);
+  height: 44px;
+  padding: 0 var(--space-300);
+  gap: var(--space-125);
 }
+.dir-b .tab-content.has-count { padding-right: var(--space-200); }
+.dir-b .tab-content.has-icon { padding-left: var(--space-200); gap: var(--space-125); }
 .dir-b .tab-content::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: var(--radius-xsmall);
+  border-radius: var(--radius-small);
   background: transparent;
   z-index: -1;
 }
@@ -304,8 +311,8 @@ button { font: inherit; color: inherit; }
   padding: var(--space-200) var(--space-300);
   z-index: 1;
 }
-/* With icon: 10px leading padding, Small (20px) icon in every state, 4px to the label */
-.dir-c .tab-content.has-icon { gap: var(--space-100); padding-left: 10px; }
+/* With icon: 12px leading padding, Small (20px) icon in every state, 4px to the label */
+.dir-c .tab-content.has-icon { gap: var(--space-100); padding-left: var(--space-200); }
 .dir-c .tab-icon {
   width: 20px;
   height: 20px;

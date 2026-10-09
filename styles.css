@@ -726,3 +726,6 @@ button { font: inherit; color: inherit; }
 @media (max-width: 600px) {
   .easing-cards { grid-template-columns: 1fr; }
 }
+
+/* Link between prototype pages (in the controls bar) */
+.page-link { font-size: 12px; line-height: 16px; color: var(--text-default); padding: 6px 8px; }

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arc · Tab Group — in situ · Client profile</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="in-situ.css" />
+</head>
+<body class="in-situ">
+  <!-- Client profile (Figma 51274:2168) -->
+  <div class="app">
+    <nav class="app-nav" aria-label="Primary">
+      <div class="app-nav-top">
+        <a class="app-logo" href="#" aria-label="Grow Therapy"><img src="assets/in-situ/grow-logo.svg" width="63" height="32" alt="" /></a>
+        <ul class="app-nav-items">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Messages</a></li>
+          <li><a href="#" aria-current="page">Clients</a></li>
+          <li><a href="#">Appointments</a></li>
+          <li><a href="#">Payouts</a></li>
+          <li><a href="#">Community <img src="assets/in-situ/external.svg" width="12" height="12" alt="" /></a></li>
+        </ul>
+      </div>
+      <button type="button" class="app-profile">
+        <img class="app-avatar" src="assets/in-situ/avatar.png" width="32" height="32" alt="" />
+        <span class="app-profile-name">
+          <span class="app-profile-title">Tim Jones</span>
+          <span class="app-profile-sub">Legal Name</span>
+        </span>
+        <img src="assets/in-situ/nav-chevron.svg" width="14" height="8" alt="" />
+      </button>
+    </nav>
+
+    <main class="app-main">
+      <header class="page-head">
+        <a class="back-link" href="#">
+          <span class="icon-button" aria-hidden="true"><img src="assets/in-situ/arrow-left.svg" width="24" height="24" alt="" /></span>
+          <span>Back to clients</span>
+        </a>
+        <div class="page-actions">
+          <button type="button" class="btn btn-secondary">Message client</button>
+          <button type="button" class="btn btn-secondary btn-has-icon">Actions <img src="assets/in-situ/chevron-down.svg" width="24" height="24" alt="" /></button>
+        </div>
+      </header>
+
+      <div class="page-grid">
+        <section class="page-left">
+          <div class="client-head">
+            <h1 class="client-name">Emmanuelle<br />Barnardiston</h1>
+            <p class="client-pronouns">She/her</p>
+          </div>
+
+          <div class="client-tabs" data-direction="a">
+            <div class="tab-group" data-tab-group></div>
+          </div>
+
+          <div class="tab-panels" data-panels>
+            <!-- Treatment (as designed) -->
+            <div class="tab-panel-view" data-view="treatment" role="tabpanel">
+              <section class="block">
+                <h2 class="subhead">Clinical considerations</h2>
+                <div class="action-item">
+                  <img src="assets/in-situ/safety-badge.svg" width="32" height="32" alt="" />
+                  <div class="action-item-text">
+                    <p class="action-item-title">Potential safety concern</p>
+                    <p class="action-item-sub">Consider reviewing coach conversation</p>
+                  </div>
+                  <button type="button" class="icon-btn-ghost" aria-label="Open"><img src="assets/in-situ/chevron-right.svg" width="40" height="40" alt="" /></button>
+                </div>
+              </section>
+
+              <section class="block">
+                <div class="block-head">
+                  <h2 class="subhead">Timeline</h2>
+                  <button type="button" class="btn btn-secondary btn-small">Add note</button>
+                </div>
+                <ol class="timeline">
+                  <li class="step is-current">
+                    <div class="step-rail"><span class="step-dot"></span><span class="step-line soft"></span></div>
+                    <div class="step-body">
+                      <div class="step-title"><span>Follow-up appointment</span><span class="step-date">Jun 9・9:30 AM EDT</span></div>
+                      <span class="tag-warning">Follow up needed</span>
+                      <div class="note-dashed"><a href="#">Start invoice</a></div>
+                    </div>
+                  </li>
+                  <li class="step">
+                    <div class="step-rail"><span class="step-line soft short"></span><span class="step-dot small"></span><span class="step-line"></span></div>
+                    <div class="step-body"><div class="step-title"><span>Follow-up appointment</span><span class="step-date">Jun 1・9:30 AM EDT</span></div></div>
+                  </li>
+                  <li class="step">
+                    <div class="step-rail"><span class="step-line short"></span><span class="step-dot small"></span><span class="step-line"></span></div>
+                    <div class="step-body"><div class="step-title"><span>Follow-up appointment</span><span class="step-date">May 17・9:30 AM EDT</span></div></div>
+                  </li>
+                  <li class="step">
+                    <div class="step-rail"><span class="step-line short"></span><span class="step-dot small"></span></div>
+                    <div class="step-body"><div class="step-title"><span>Follow-up appointment</span><span class="step-date">May 1・9:30 AM EDT</span></div></div>
+                  </li>
+                </ol>
+              </section>
+            </div>
+
+            <!-- Other tabs: light placeholder content so switching feels real -->
+            <div class="tab-panel-view" data-view="overview" role="tabpanel" hidden>
+              <section class="block">
+                <h2 class="subhead">Upcoming</h2>
+                <div class="list-row"><span>Follow-up appointment</span><span class="step-date">Jun 16・9:30 AM EDT</span></div>
+                <div class="list-row"><span>Follow-up appointment</span><span class="step-date">Jun 23・9:30 AM EDT</span></div>
+              </section>
+              <section class="block">
+                <h2 class="subhead">Care summary</h2>
+                <p class="body-muted">Weekly sessions since January. Focus on work-related stress and sleep. Last measured PHQ-9: 8 (mild).</p>
+              </section>
+            </div>
+            <div class="tab-panel-view" data-view="intersession" role="tabpanel" hidden>
+              <section class="block">
+                <h2 class="subhead">Between sessions</h2>
+                <div class="list-row"><span>Sleep journal shared</span><span class="step-date">Jun 7</span></div>
+                <div class="list-row"><span>Breathing exercise completed</span><span class="step-date">Jun 4</span></div>
+                <div class="list-row"><span>Check-in message</span><span class="step-date">Jun 2</span></div>
+              </section>
+            </div>
+            <div class="tab-panel-view" data-view="forms" role="tabpanel" hidden>
+              <section class="block">
+                <h2 class="subhead">Forms and files</h2>
+                <div class="list-row"><span>Intake questionnaire</span><span class="step-date">Completed Jan 8</span></div>
+                <div class="list-row"><span>PHQ-9</span><span class="step-date">Completed Jun 1</span></div>
+                <div class="list-row"><span>Consent to treatment</span><span class="step-date">Signed Jan 8</span></div>
+              </section>
+            </div>
+          </div>
+        </section>
+
+        <aside class="page-right">
+          <section class="info-block">
+            <h2 class="subhead">Client information</h2>
+            <div class="desc-list">
+              <p class="desc-label">Notes</p>
+              <p class="body">Son Charlie, 14yo. Wife Marisa, together 17 yrs. Dog Fido. Works at Orange Inc, manages team of 10, high stress. This text box includes important non-clinical information about this client. It may get a bit lengthy if the provider...</p>
+              <a class="text-link" href="#">Link Button</a>
+              <p class="body-small-emphasis">These notes will not be saved as psychotherapy notes or in the medical record.</p>
+            </div>
+          </section>
+          <hr class="divider" />
+          <div class="desc-grid">
+            <div class="desc"><p class="desc-label">Legal first and last name</p><p class="desc-value">Emmanuelle Barnardiston</p></div>
+            <div class="desc"><p class="desc-label">Sex on insurance</p><p class="desc-value">Female</p></div>
+            <div class="desc"><p class="desc-label">Telephone</p><p class="desc-value">415-361-9796</p></div>
+            <div class="desc"><p class="desc-label">Birthdate</p><p class="desc-value">01/05/00 (Age 22)</p></div>
+            <div class="desc"><p class="desc-label">Emergency contact</p><p class="desc-value">415-361-9796・Mother</p></div>
+            <div class="desc"><p class="desc-label">Email</p><p class="desc-value">vpatel1234@gmail.com</p></div>
+          </div>
+          <hr class="divider" />
+          <div class="desc-rows">
+            <div class="desc-row"><div class="desc"><p class="desc-label">Payment information</p><p class="desc-value">Card</p></div><a class="text-link" href="#">Link Button</a></div>
+            <div class="desc-row"><div class="desc"><p class="desc-label">Insurance information</p><p class="desc-value">Aetna</p></div><a class="text-link" href="#">Link Button</a></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div class="controls">
+    <div class="easing-popover" id="easing-popover" hidden>
+      <div class="easing-scale" aria-hidden="true"><span>Subtle</span><span class="easing-scale-line"></span><span>Expressive</span></div>
+      <div class="easing-cards" data-easing-list role="radiogroup" aria-label="Easing curve"></div>
+      <div class="easing-value">
+        <code data-preview-value></code>
+        <button type="button" class="copy" data-copy>Copy</button>
+      </div>
+    </div>
+
+    <!-- Direction switch -->
+    <div class="bar" role="toolbar" aria-label="Direction">
+      <span class="bar-title">Direction</span>
+      <div class="segmented" data-direction-control role="radiogroup" aria-label="Tab group direction">
+        <button type="button" role="radio" data-value="a">A · Text hover</button>
+        <button type="button" role="radio" data-value="b">B · Surface hover</button>
+        <button type="button" role="radio" data-value="c">C · Inverse selected</button>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <a class="page-link" href="index.html">Compare all</a>
+    </div>
+
+    <!-- Motion controls -->
+    <div class="bar motion-bar" role="toolbar" aria-label="Motion controls">
+      <span class="bar-title">Motion</span>
+      <div class="segmented" data-motion-mode role="radiogroup" aria-label="Indicator animation">
+        <button type="button" role="radio" data-value="none">None</button>
+        <button type="button" role="radio" data-value="slide">Slide</button>
+        <button type="button" role="radio" data-value="stretch">Stretch</button>
+        <button type="button" role="radio" data-value="grow">Grow</button>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <button type="button" class="chip-button" data-easing-trigger aria-haspopup="true" aria-expanded="false" aria-controls="easing-popover">
+        <svg data-trigger-thumb width="24" height="20" viewBox="0 0 24 20" aria-hidden="true"></svg>
+        <span class="easing-trigger-name" data-trigger-name></span>
+        <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 6.5 5 3.5 8 6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <label class="duration">
+        <span>Duration</span>
+        <input type="range" min="100" max="1200" step="25" data-duration />
+        <output data-duration-value></output>
+      </label>
+      <button type="button" class="replay" data-replay title="Select the next tab (R)">
+        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg>
+        Replay
+      </button>
+    </div>
+  </div>
+
+  <script src="easings.js"></script>
+  <script src="tabs.js"></script>
+  <script src="in-situ.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>

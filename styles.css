@@ -294,6 +294,8 @@ button { font: inherit; color: inherit; }
   --indicator-disabled: transparent;
 }
 .dir-c .tablist { gap: var(--space-0); }
+/* 2px gap between the tabs and the 1px divider below them */
+.dir-c .tablist.has-divider { padding-bottom: calc(var(--space-50) + var(--bw-default)); }
 .dir-c .tab { z-index: 1; }
 .dir-c .tab-content {
   height: 32px;

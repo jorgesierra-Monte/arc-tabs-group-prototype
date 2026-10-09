@@ -260,7 +260,7 @@ button { font: inherit; color: inherit; }
    Content 44px tall, 16px side padding (12px trailing with a count, 12px
    leading with an icon), 6px between label and count/icon. Tabs sit edge
    to edge. Hover surface radius small (8px). The 2px underline sits 4px
-   below the surface (50px total), inset 16px from both tab edges.
+   below the surface (50px total) and spans the full tab width.
    Selected tabs also take the hover surface ("Hover selected").
    ============================================================ */
 .dir-b .tablist { gap: var(--space-0); } /* tabs sit edge to edge; padding does the spacing */
@@ -281,7 +281,7 @@ button { font: inherit; color: inherit; }
   z-index: -1;
 }
 .dir-b .tab-content { isolation: isolate; }
-.dir-b .tab-indicator { margin: 0 var(--space-300); }
+.dir-b .tab-indicator { margin: 0; } /* underline spans the full tab */
 
 @media (hover: hover) {
   .dir-b .tab:not([aria-disabled="true"]):hover .tab-content::before {

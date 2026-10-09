@@ -89,8 +89,8 @@ button { font: inherit; color: inherit; }
   padding: 32px 0 0;
   overflow-x: auto;
 }
-/* Same height in A (32px), B (34px) and C (41px with its divider gap) so both halves line up across the split */
-.tab-group { min-height: 41px; }
+/* Same height in A (32px), B (34px) and C (53px with its divider gap) so both halves line up across the split */
+.tab-group { min-height: 53px; }
 .tab-panel {
   margin-top: 24px;
   min-height: 72px;
@@ -284,22 +284,24 @@ button { font: inherit; color: inherit; }
 
 /* ============================================================
    Direction C — Underline hover  (Figma "Tab Item - 3", 51197:16683)
-   32px tall, 6/16 padding, tabs edge to edge. Hover = label darkens +
-   soft surface (comp/interaction/surface/hover, radius xsmall). Selected = black inverse surface
-   (radius xsmall) behind a white emphasis label, no line. Selected disabled has no
+   44px tall, 12/16 padding (10px leading with an icon), tabs edge to edge,
+   radius small (8px). Hover = label darkens + soft surface (surface/hover).
+   Selected = black surface (surface/selected), white emphasis label
+   (text/selected), Subtle count tag. Selected disabled = surface/disabled. Selected disabled has no
    surface. Icons are the 20px Small size in every state.
    ============================================================ */
 .dir-c {
-  --indicator-color: var(--surface-inverse);
-  --indicator-disabled: transparent;
+  --indicator-color: var(--comp-interaction-surface-selected);
+  --indicator-disabled: var(--comp-interaction-surface-disabled);
+  --indicator-radius: var(--radius-small);
 }
 .dir-c .tablist { gap: var(--space-0); }
 /* 8px gap between the tabs and the 1px divider below them */
 .dir-c .tablist.has-divider { padding-bottom: calc(var(--space-150) + var(--bw-default)); }
 .dir-c .tab { z-index: 1; }
 .dir-c .tab-content {
-  height: 32px;
-  padding: var(--space-125) var(--space-300);
+  height: 44px;
+  padding: var(--space-200) var(--space-300);
   z-index: 1;
 }
 /* With icon: 10px leading padding, Small (20px) icon in every state, 4px to the label */
@@ -315,16 +317,16 @@ button { font: inherit; color: inherit; }
   position: absolute;
   inset: 0;
   height: auto;
-  border-radius: var(--radius-xsmall);
+  border-radius: var(--indicator-radius);
   z-index: 0;
 }
-.dir-c .tab-slider { border-radius: var(--radius-xsmall); z-index: 0; }
+.dir-c .tab-slider { border-radius: var(--indicator-radius); z-index: 0; }
 /* Hover: soft surface behind the tab (comp/interaction/surface/hover), no line */
 .dir-c .tab::before {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: var(--radius-xsmall);
+  border-radius: var(--indicator-radius);
   background: transparent;
   z-index: 0;
   pointer-events: none;
@@ -351,9 +353,14 @@ button { font: inherit; color: inherit; }
 .tablist.no-transition .tab-invert,
 .tab-invert.no-anim { transition: none !important; }
 .tab-invert .tab,
-.tab-invert .tab[aria-selected="true"] { color: var(--text-inverse); }
+.tab-invert .tab[aria-selected="true"] { color: var(--comp-interaction-text-selected); }
 .tab-invert .tab .tab-label { color: inherit !important; opacity: 1 !important; }
-.tab-invert .tab .tab-icon { background-color: var(--icon-inverse) !important; }
+.tab-invert .tab .tab-icon { background-color: var(--comp-interaction-icon-inverse) !important; }
+.tab-invert .tab .tag {
+  background: var(--comp-status-surface-subtle);
+  border-color: var(--comp-status-surface-subtle);
+  color: var(--comp-status-text-subtle);
+}
 .tab-invert .tab-indicator,
 .tab-invert .tab-hover-line,
 .tab-invert .tab-content::after { display: none !important; }

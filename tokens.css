@@ -17,6 +17,8 @@
   --surface-emphasis: #e6e2de;                /* surface/emphasis (tab rail) */
   --comp-interaction-surface-hover: #f1efec;  /* comp/interaction/surface/hover */
   --surface-inverse: #010204;                 /* surface/inverse */
+  --comp-interaction-surface-selected: #000000; /* comp/interaction/surface/selected */
+  --comp-interaction-surface-disabled: #f7f5f4; /* comp/interaction/surface/disabled */
 
   /* ---- Text ---- */
   --text-default: #010204;                    /* text/default */
@@ -24,11 +26,13 @@
   --comp-interaction-text-hover: #010204;     /* comp/interaction/text/hover */
   --comp-interaction-text-disabled: #777878;  /* comp/interaction/text/disabled */
   --text-inverse: #ffffff;                    /* text/inverse */
+  --comp-interaction-text-selected: #ffffff;  /* comp/interaction/text/selected */
 
   /* ---- Icon ---- */
   --icon-default: #010204;                    /* icon/default */
   --comp-interaction-icon-disabled: #777878;  /* comp/interaction/icon/disabled */
   --icon-inverse: #ffffff;                    /* icon/inverse */
+  --comp-interaction-icon-inverse: #ffffff;   /* comp/interaction/icon/inverse */
 
   /* ---- Border ---- */
   --comp-interaction-border-selected: #000000; /* comp/interaction/border/selected */
@@ -40,6 +44,9 @@
   --comp-status-surface-neutral-light: #ffffff;
   --comp-status-border-neutral-light: #d4d5d5;
   --comp-status-text-neutral-light: #000000;
+  /* Tag V2 · Subtle · Count (on the selected surface) */
+  --comp-status-surface-subtle: #403f3e;
+  --comp-status-text-subtle: #ffffff;
 
   /* ---- Type ---- */
   --font-sans: "Season Sans VF", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;

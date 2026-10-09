@@ -143,7 +143,7 @@ class TabGroup {
     if (!this.invert) return;
     const W = this.list.offsetWidth, H = this.list.offsetHeight;
     this.invert.style.clipPath =
-      `inset(${y}px ${W - x - w}px ${H - y - h}px ${x}px round var(--radius-xsmall))`;
+      `inset(${y}px ${W - x - w}px ${H - y - h}px ${x}px round var(--indicator-radius, var(--radius-xsmall)))`;
   }
 
   placeInvert(animate = true) {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Arc · Tab Group — hover directions</title>
+  <title>Arc · Tab Group — three directions</title>
   <link rel="stylesheet" href="tokens.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -48,6 +48,26 @@
         <div class="states" data-states></div>
       </div>
     </section>
+
+    <section class="direction" data-direction="c" aria-labelledby="dir-c-title">
+      <div class="direction-inner">
+        <div class="direction-head">
+          <span class="direction-badge">C</span>
+          <div>
+            <h2 class="direction-title" id="dir-c-title">Underline hover</h2>
+            <p class="direction-desc">Hover underlines the tab. The selected tab fills a soft surface.</p>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="tab-group" data-tab-group></div>
+          <div class="tab-panel" data-tab-panel role="tabpanel"></div>
+        </div>
+
+        <h3 class="section-label">States</h3>
+        <div class="states" data-states></div>
+      </div>
+    </section>
   </main>
 
   <div class="controls">
@@ -67,7 +87,8 @@
       <div class="segmented" data-motion-target role="radiogroup" aria-label="Apply motion to">
         <button type="button" role="radio" data-value="a">A</button>
         <button type="button" role="radio" data-value="b">B</button>
-        <button type="button" role="radio" data-value="both">Both</button>
+        <button type="button" role="radio" data-value="c">C</button>
+        <button type="button" role="radio" data-value="all">All</button>
       </div>
       <span class="bar-divider" aria-hidden="true"></span>
       <div class="segmented" data-motion-mode role="radiogroup" aria-label="Indicator animation">
@@ -95,19 +116,11 @@
     </div>
   </div>
 
-  <!-- Variants: vertical stack centred on the dividing line -->
+  <!-- Variants: vertical stack on the right edge, applies to all three directions -->
   <div class="variants" role="toolbar" aria-label="Tab variants">
     <div class="variants-group">
-      <div class="variants-head"><span class="bar-label">A</span><span class="bar-title">Tabs type</span></div>
-      <div class="segmented is-vertical" data-type-control="a" role="radiogroup" aria-label="Direction A tab type">
-        <button type="button" role="radio" data-value="default">Default</button>
-        <button type="button" role="radio" data-value="count">With count</button>
-        <button type="button" role="radio" data-value="icon">With icon</button>
-      </div>
-    </div>
-    <div class="variants-group">
-      <div class="variants-head"><span class="bar-label">B</span><span class="bar-title">Tabs type</span></div>
-      <div class="segmented is-vertical" data-type-control="b" role="radiogroup" aria-label="Direction B tab type">
+      <div class="variants-head"><span class="bar-title">Tabs type</span></div>
+      <div class="segmented is-vertical" data-type-control role="radiogroup" aria-label="Tab type for all directions">
         <button type="button" role="radio" data-value="default">Default</button>
         <button type="button" role="radio" data-value="count">With count</button>
         <button type="button" role="radio" data-value="icon">With icon</button>

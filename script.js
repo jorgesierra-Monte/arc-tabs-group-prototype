@@ -1,10 +1,9 @@
-// Arc Tab Group prototype — two independent groups (A: text hover, B: surface hover)
+// Arc Tab Group prototype — three independent groups (A: text hover, B: surface hover, C: underline hover)
 
 const TABS = [
   { id: "today",   label: "Today",   count: 4,  blurb: "Sessions and tasks scheduled for today." },
   { id: "notes",   label: "Notes",   count: 12, blurb: "Progress notes waiting for your signature." },
   { id: "forms",   label: "Forms",   count: 3,  blurb: "Intake forms and assessments from clients." },
-  { id: "billing", label: "Billing", count: 8,  blurb: "Claims, payments, and superbills." },
   { id: "files",   label: "Files",   count: 2,  blurb: "Documents shared with clients." },
 ];
 const DISABLED_ID = "files";
@@ -304,24 +303,28 @@ document.querySelectorAll("[data-direction]").forEach((section) => {
   groups[g.key] = g;
 });
 
-// Type controls (one per group)
-document.querySelectorAll("[data-type-control]").forEach((control) => {
-  const group = groups[control.dataset.typeControl];
-  const buttons = [...control.querySelectorAll("button")];
-  const sync = () => buttons.forEach((b) => b.setAttribute("aria-checked", String(b.dataset.value === group.type)));
-  buttons.forEach((b) => b.addEventListener("click", () => { group.setType(b.dataset.value); sync(); }));
-  control.addEventListener("keydown", (e) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-    e.preventDefault();
-    const i = buttons.findIndex((b) => b.dataset.value === group.type);
-    const next = buttons[(i + (e.key === "ArrowRight" ? 1 : buttons.length - 1)) % buttons.length];
-    next.click();
-    next.focus();
-  });
-  sync();
+// Tabs type — one control drives all three directions
+const typeControl = document.querySelector("[data-type-control]");
+const typeButtons = [...typeControl.querySelectorAll("button")];
+let currentType = "default";
+function setAllTypes(type) {
+  currentType = type;
+  Object.values(groups).forEach((g) => g.setType(type));
+  typeButtons.forEach((b) => b.setAttribute("aria-checked", String(b.dataset.value === type)));
+}
+typeButtons.forEach((b) => b.addEventListener("click", () => setAllTypes(b.dataset.value)));
+typeControl.addEventListener("keydown", (e) => {
+  if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(e.key)) return;
+  e.preventDefault();
+  const i = typeButtons.findIndex((b) => b.dataset.value === currentType);
+  const step = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : typeButtons.length - 1;
+  const next = typeButtons[(i + step) % typeButtons.length];
+  next.click();
+  next.focus();
 });
+setAllTypes("default");
 
-// Global toggles (apply to both groups)
+// Global toggles (apply to all groups)
 document.querySelector('[data-toggle="divider"]').addEventListener("change", (e) => {
   settings.divider = e.target.checked;
   Object.values(groups).forEach((g) => g.render());
@@ -335,14 +338,12 @@ document.querySelector('[data-toggle="disabled"]').addEventListener("change", (e
   Object.values(groups).forEach((g) => g.render());
 });
 
-// Number keys 1–3 switch A, Shift+1–3 switch B
+// Number keys 1–3 switch the tabs type for all directions
 const TYPE_KEYS = ["default", "count", "icon"];
 document.addEventListener("keydown", (e) => {
-  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.metaKey || e.ctrlKey || e.altKey || e.target.tagName === "INPUT") return;
   const n = Number(e.code.replace("Digit", ""));
-  if (!(n >= 1 && n <= 3)) return;
-  const key = e.shiftKey ? "b" : "a";
-  document.querySelector(`[data-type-control="${key}"] [data-value="${TYPE_KEYS[n - 1]}"]`).click();
+  if (n >= 1 && n <= 3) setAllTypes(TYPE_KEYS[n - 1]);
 });
 
 // ============================================================
@@ -350,8 +351,8 @@ document.addEventListener("keydown", (e) => {
 // ============================================================
 const SVG_NS = "http://www.w3.org/2000/svg";
 const motionUI = {
-  target: "both",
-  get groups() { return this.target === "both" ? Object.values(groups) : [groups[this.target]]; },
+  target: "all",
+  get groups() { return this.target === "all" ? Object.values(groups) : [groups[this.target]]; },
   // Values shown in the UI come from the first targeted group
   get current() { return this.groups[0].motion; },
 };

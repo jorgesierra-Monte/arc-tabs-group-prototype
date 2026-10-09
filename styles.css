@@ -23,22 +23,15 @@ button { font: inherit; color: inherit; }
 .txt-label-emphasis  { font-family: var(--font-sans); font-weight: var(--fw-medium);  font-size: var(--fs-label-and-body-default); line-height: var(--lh-label-default); letter-spacing: var(--ls-loose); font-feature-settings: "calt" 0; }
 .txt-eyebrow         { font-family: var(--font-sans); font-weight: var(--fw-medium);  font-size: var(--fs-eyebrow-default);      line-height: var(--lh-eyebrow-default); letter-spacing: var(--ls-looser); text-transform: uppercase; font-feature-settings: "calt" 0; }
 
-/* Two halves split by a full-height vertical line */
+/* Three directions side by side, split by full-height vertical lines.
+   The variants panel floats on the right edge, so that space is reserved. */
 .compare {
+  --variants-clear: 156px;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   min-height: 100vh;
-}
-.compare::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: var(--bw-default);
-  background: var(--surface-emphasis);
-  pointer-events: none;
+  padding-right: var(--variants-clear);
 }
 
 .direction {
@@ -47,26 +40,19 @@ button { font: inherit; color: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 40px 24px;
+  padding: 40px 16px;
 }
-/* Keep content clear of the variants panel that sits on the dividing line */
-.compare { --variants-clear: 88px; }
-.direction[data-direction="a"] { padding-right: var(--variants-clear); }
-.direction[data-direction="b"] { padding-left: var(--variants-clear); }
+.direction + .direction { border-left: var(--bw-default) solid var(--surface-emphasis); }
 .direction-inner {
   width: 100%;
-  max-width: 600px;
+  max-width: 560px;
   margin: 0 auto;
 }
 
 @media (max-width: 1100px) {
-  .compare { grid-template-columns: 1fr; }
-  .compare::before { display: none; }
-  .direction,
-  .direction[data-direction="a"],
-  .direction[data-direction="b"] { min-height: auto; padding: 48px 24px; }
-  .direction + .direction { border-top: var(--bw-default) solid var(--surface-emphasis); }
-  .compare { padding-bottom: 180px; }
+  .compare { grid-template-columns: 1fr; padding-right: 0; padding-bottom: 180px; }
+  .direction { min-height: auto; padding: 48px 24px; }
+  .direction + .direction { border-left: 0; border-top: var(--bw-default) solid var(--surface-emphasis); }
 }
 
 .direction-head {
@@ -94,6 +80,7 @@ button { font: inherit; color: inherit; }
   font-weight: var(--fw-medium);
 }
 .direction-desc {
+  min-height: 40px; /* two lines, so all three columns line up */
   margin: 0;
   font-size: 14px;
   line-height: 20px;
@@ -159,6 +146,12 @@ button { font: inherit; color: inherit; }
   font-size: 12px;
   line-height: 16px;
   color: var(--comp-interaction-text-muted);
+}
+
+/* Selection indicator colour — an underline in A/B, a surface in C */
+.tab-group, .states {
+  --indicator-color: var(--comp-interaction-border-selected);
+  --indicator-disabled: var(--comp-interaction-border-disabled);
 }
 
 /* ============================================================
@@ -271,7 +264,7 @@ button { font: inherit; color: inherit; }
   cursor: default;
 }
 .tab[aria-selected="true"] .tab-label { font-weight: var(--fw-medium); }
-.tab[aria-selected="true"] .tab-indicator { background: var(--comp-interaction-border-selected); }
+.tab[aria-selected="true"] .tab-indicator { background: var(--indicator-color); }
 
 /* Disabled + Selected disabled */
 .tab[aria-disabled="true"] { cursor: not-allowed; }
@@ -284,7 +277,7 @@ button { font: inherit; color: inherit; }
   border-color: var(--comp-interaction-border-disabled);
   color: var(--comp-interaction-text-disabled);
 }
-.tab[aria-disabled="true"][aria-selected="true"] .tab-indicator { background: var(--comp-interaction-border-disabled); }
+.tab[aria-disabled="true"][aria-selected="true"] .tab-indicator { background: var(--indicator-disabled); }
 
 /* Focus — 2px ink ring (Arc focus-ring); radius = base + 4 */
 .tab:focus-visible .tab-content::after,
@@ -338,6 +331,46 @@ button { font: inherit; color: inherit; }
 .dir-b .tab.is-hover .tab-content::before { background: var(--comp-interaction-surface-hover); }
 
 /* ============================================================
+   Direction C — Underline hover  (Figma "Tab Item - 3", 51197:16683)
+   32px tall, 6/16 padding, tabs edge to edge. Hover = label darkens +
+   2px black line across the full tab. Selected = soft surface (radius
+   xsmall) behind an emphasis label, no line. Selected disabled has no
+   surface. Icons are 20px.
+   ============================================================ */
+.dir-c {
+  --indicator-color: var(--comp-interaction-surface-hover);
+  --indicator-disabled: transparent;
+}
+.dir-c .tablist { gap: var(--space-0); }
+.dir-c .tab { z-index: 1; }
+.dir-c .tab-content {
+  height: 32px;
+  padding: var(--space-125) var(--space-300);
+  z-index: 1;
+}
+.dir-c .tab-content.has-icon { gap: var(--space-100); }
+.dir-c .tab-icon {
+  width: 20px;
+  height: 20px;
+  -webkit-mask-size: 20px 20px;
+          mask-size: 20px 20px;
+}
+/* The selected surface fills the whole tab, behind the label */
+.dir-c .tab-indicator {
+  position: absolute;
+  inset: 0;
+  height: auto;
+  border-radius: var(--radius-xsmall);
+  z-index: 0;
+}
+.dir-c .tab-slider { border-radius: var(--radius-xsmall); z-index: 0; }
+/* Hover line: always part of C's design */
+.dir-c .tab.is-hover:not([aria-selected="true"]) .tab-hover-line { display: block; }
+@media (hover: hover) {
+  .dir-c .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-hover-line { display: block; }
+}
+
+/* ============================================================
    Selection motion (live tab groups only)
    --motion-dur / --motion-ease are set per group from the Motion bar
    ============================================================ */
@@ -352,7 +385,7 @@ button { font: inherit; color: inherit; }
   left: 0;
   top: 0;
   height: var(--bw-thick);
-  background: var(--comp-interaction-border-selected);
+  background: var(--indicator-color);
   z-index: 2;
   pointer-events: none;
   display: none;
@@ -370,7 +403,7 @@ button { font: inherit; color: inherit; }
    scale once it's invisible. */
 .tablist { --grow-fade-out: 120ms; }
 .tablist.motion-grow .tab-indicator {
-  background: var(--comp-interaction-border-selected);
+  background: var(--indicator-color);
   transform: scaleX(0);
   opacity: 0;
   transform-origin: 50% 50%;
@@ -574,9 +607,9 @@ button { font: inherit; color: inherit; }
 /* ---- Variants panel (vertical, centred on the dividing line) ---- */
 .variants {
   position: fixed;
-  left: 50%;
+  right: 20px;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
   z-index: 9;
   width: 128px;
   display: flex;

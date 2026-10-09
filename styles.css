@@ -285,7 +285,7 @@ button { font: inherit; color: inherit; }
 /* ============================================================
    Direction C — Underline hover  (Figma "Tab Item - 3", 51197:16683)
    32px tall, 6/16 padding, tabs edge to edge. Hover = label darkens +
-   2px black line across the full tab. Selected = black inverse surface
+   soft surface (comp/interaction/surface/hover, radius xsmall). Selected = black inverse surface
    (radius xsmall) behind a white emphasis label, no line. Selected disabled has no
    surface. Icons are the 20px Small size in every state.
    ============================================================ */
@@ -317,9 +317,20 @@ button { font: inherit; color: inherit; }
   z-index: 0;
 }
 .dir-c .tab-slider { border-radius: var(--radius-xsmall); z-index: 0; }
-/* Hover line: always part of C's design */
+/* Hover: soft surface behind the tab (comp/interaction/surface/hover), no line */
+.dir-c .tab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xsmall);
+  background: transparent;
+  z-index: 0;
+  pointer-events: none;
+}
 @media (hover: hover) {
-  .dir-c .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover .tab-hover-line { display: block; }
+  .dir-c .tab:not([aria-selected="true"]):not([aria-disabled="true"]):hover::before {
+    background: var(--comp-interaction-surface-hover);
+  }
 }
 
 /* Inverted labels — a white copy of C's tabs, clipped to the black surface */

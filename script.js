@@ -1,4 +1,4 @@
-// Arc Tab Group prototype — three independent groups (A: text hover, B: surface hover, C: underline hover)
+// Arc Tab Group prototype — three independent groups (A: text hover, B: surface hover, C: inverse selected)
 
 const TABS = [
   { id: "today",   label: "Today",   count: 4,  blurb: "Sessions and tasks scheduled for today." },

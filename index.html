@@ -75,6 +75,26 @@
       </div>
     </div>
 
+    <!-- Variants (applies to all three directions) -->
+    <div class="bar variants-bar" role="toolbar" aria-label="Tab variants">
+      <span class="bar-title">Tabs type</span>
+      <div class="segmented" data-type-control role="radiogroup" aria-label="Tab type for all directions">
+        <button type="button" role="radio" data-value="default">Default</button>
+        <button type="button" role="radio" data-value="count">With count</button>
+        <button type="button" role="radio" data-value="icon">With icon</button>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <div class="bar-group toggles">
+        <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
+        <label class="switch"><input type="checkbox" data-toggle="disabled" checked /><span>Disabled tab</span></label>
+      </div>
+      <span class="bar-divider" aria-hidden="true"></span>
+      <div class="bar-group" role="group" aria-label="Hover options for direction A">
+        <span class="bar-title">Hover</span><em class="dir-badge" title="Direction A only">A</em>
+        <div class="toggles"><label class="switch"><input type="checkbox" data-toggle="hoverLine" /><span>Line on hover</span></label></div>
+      </div>
+    </div>
+
     <!-- Motion controls -->
     <div class="bar motion-bar" role="toolbar" aria-label="Motion controls">
       <span class="bar-title">Motion</span>
@@ -107,26 +127,6 @@
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg>
         Replay
       </button>
-    </div>
-  </div>
-
-  <!-- Variants: vertical stack on the right edge, applies to all three directions -->
-  <div class="variants" role="toolbar" aria-label="Tab variants">
-    <div class="variants-group">
-      <div class="variants-head"><span class="bar-title">Tabs type</span></div>
-      <div class="segmented is-vertical" data-type-control role="radiogroup" aria-label="Tab type for all directions">
-        <button type="button" role="radio" data-value="default">Default</button>
-        <button type="button" role="radio" data-value="count">With count</button>
-        <button type="button" role="radio" data-value="icon">With icon</button>
-      </div>
-    </div>
-    <div class="variants-group toggles">
-      <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
-      <label class="switch"><input type="checkbox" data-toggle="disabled" checked /><span>Disabled tab</span></label>
-    </div>
-    <div class="variants-group hover-group" role="group" aria-label="Hover options for direction A">
-      <div class="variants-head"><span class="bar-title">Hover</span><em class="dir-badge" title="Direction A only">A</em></div>
-      <label class="switch"><input type="checkbox" data-toggle="hoverLine" /><span>Line on hover</span></label>
     </div>
   </div>
 

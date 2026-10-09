@@ -24,14 +24,12 @@ button { font: inherit; color: inherit; }
 .txt-eyebrow         { font-family: var(--font-sans); font-weight: var(--fw-medium);  font-size: var(--fs-eyebrow-default);      line-height: var(--lh-eyebrow-default); letter-spacing: var(--ls-looser); text-transform: uppercase; font-feature-settings: "calt" 0; }
 
 /* Three directions side by side, split by full-height vertical lines.
-   The variants panel floats on the right edge, so that space is reserved. */
+   */
 .compare {
-  --variants-clear: 156px;
   position: relative;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   min-height: 100vh;
-  padding-right: var(--variants-clear);
 }
 
 .direction {
@@ -50,7 +48,7 @@ button { font: inherit; color: inherit; }
 }
 
 @media (max-width: 1100px) {
-  .compare { grid-template-columns: 1fr; padding-right: 0; padding-bottom: 180px; }
+  .compare { grid-template-columns: 1fr; padding-bottom: 220px; }
   .direction { min-height: auto; padding: 48px 24px; }
   .direction + .direction { border-left: 0; border-top: var(--bw-default) solid var(--surface-emphasis); }
 }
@@ -558,34 +556,6 @@ button { font: inherit; color: inherit; }
 }
 .switch:hover span { color: var(--text-default); }
 
-/* ---- Variants panel (vertical, centred on the dividing line) ---- */
-.variants {
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 9;
-  width: 128px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 10px;
-  background: var(--surface-default);
-  border: var(--bw-default) solid var(--surface-emphasis);
-  border-radius: 16px;
-  box-shadow: var(--shadow-float);
-}
-.variants-group { display: flex; flex-direction: column; gap: 6px; }
-.variants-group + .variants-group {
-  padding-top: 12px;
-  border-top: var(--bw-default) solid var(--surface-emphasis);
-}
-.variants-head { display: flex; align-items: center; gap: 6px; padding: 0 2px; }
-.segmented.is-vertical { flex-direction: column; border-radius: 12px; }
-.segmented.is-vertical button { text-align: left; border-radius: 9px; }
-.variants .toggles { gap: 2px; padding: 12px 0 0; }
-.variants .switch span { padding: 4px 4px; white-space: nowrap; }
-.variants .hover-group { gap: 4px; }
 .dir-badge {
   font-style: normal;
   display: inline-grid;
@@ -598,6 +568,7 @@ button { font: inherit; color: inherit; }
   font-weight: var(--fw-medium);
   color: var(--text-default);
 }
+.variants-bar .bar-group { gap: 6px; }
 
 /* ---- Easing picker popover: three curves, subtle → expressive ---- */
 .easing-popover {
@@ -697,7 +668,6 @@ button { font: inherit; color: inherit; }
 }
 
 @media (max-width: 1100px) {
-  .variants { top: 16px; right: 16px; left: auto; transform: none; }
   .bar { flex-wrap: wrap; justify-content: center; border-radius: 20px; padding: 8px; gap: 8px; }
   .bar-divider { display: none; }
 

@@ -46,6 +46,12 @@ dirControl.addEventListener("keydown", (e) => {
 });
 setDirection("a");
 
+// Divider under the tabs
+document.querySelector('[data-toggle="divider"]').addEventListener("change", (e) => {
+  settings.divider = e.target.checked;
+  groups.main.render();
+});
+
 // Keys 1–3 switch direction
 document.addEventListener("keydown", (e) => {
   if (e.metaKey || e.ctrlKey || e.altKey || e.target.tagName === "INPUT") return;

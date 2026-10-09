@@ -29,10 +29,6 @@ typeControl.addEventListener("keydown", (e) => {
 setAllTypes("default");
 
 // Global toggles (apply to all groups)
-document.querySelector('[data-toggle="divider"]').addEventListener("change", (e) => {
-  settings.divider = e.target.checked;
-  Object.values(groups).forEach((g) => g.render());
-});
 document.querySelector('[data-toggle="hoverLine"]').addEventListener("change", (e) => {
   settings.hoverLine = e.target.checked;
   groups.a.render();

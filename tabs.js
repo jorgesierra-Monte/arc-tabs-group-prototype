@@ -76,7 +76,7 @@ class TabGroup {
     this.onSelect = opts.onSelect || null;
     this.type = "default";
     this.selectedId = opts.selectedId || "notes";
-    this.motion = { mode: "slide", easingId: "standard", duration: 250 };
+    this.motion = { mode: "slide", easingId: "decelerate", duration: 300 }; // final: Slide + Decelerate
 
     this.mount = section.querySelector("[data-tab-group]");
     this.panel = section.querySelector("[data-tab-panel]");

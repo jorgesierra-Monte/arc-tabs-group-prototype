@@ -1,4 +1,5 @@
-// In situ pages — one real tab group, switchable between directions A/B/C.
+// In situ pages — the final tab group (B · Surface hover, Slide, Decelerate).
+// A/C, other motions and easings stay reachable under "Older explorations".
 // Tabs come from the page: every [data-view] panel (data-label = tab label, in
 // tab order via data-order or DOM order); the visible panel starts selected.
 
@@ -17,10 +18,13 @@ function showView(tab, group) {
   }
 }
 
+const FINAL = { direction: "b", mode: "slide", easingId: "decelerate" };
+const NAMES = { a: "A · Text hover", b: "B · Surface hover", c: "C · Inverse selected" };
+
 const mount = document.querySelector("[data-insitu-tabs]");
 const groups = {
   main: new TabGroup(mount, {
-    direction: "a",
+    direction: FINAL.direction,
     id: "insitu",
     tabs,
     selectedId: views.find((v) => !v.hidden).dataset.view,
@@ -36,7 +40,29 @@ const dirButtons = [...dirControl.querySelectorAll("button")];
 function setDirection(key) {
   groups.main.setDirection(key);
   dirButtons.forEach((b) => b.setAttribute("aria-checked", String(b.dataset.value === key)));
+  updateSummary();
 }
+
+// Summary in the bottom-left panel: the final spec, or what's being explored
+const summary = document.querySelector("[data-summary]");
+function updateSummary() {
+  if (!summary) return;
+  const g = groups.main;
+  const m = g.motion;
+  const easing = EASINGS.find((e) => e.id === m.easingId);
+  const motion = m.mode === "none" ? "No motion" : `${m.mode[0].toUpperCase()}${m.mode.slice(1)} · ${easing.name}`;
+  const isFinal = g.key === FINAL.direction && m.mode === FINAL.mode && m.easingId === FINAL.easingId;
+  summary.innerHTML = `<span class="final-badge${isFinal ? "" : " is-exploring"}">${isFinal ? "Final" : "Exploring"}</span>${NAMES[g.key]} · ${motion}`;
+}
+document.addEventListener("motionchange", updateSummary);
+
+// Back to the chosen spec
+document.querySelector("[data-reset-final]")?.addEventListener("click", () => {
+  setDirection(FINAL.direction);
+  const easing = EASINGS.find((e) => e.id === FINAL.easingId);
+  groups.main.setMotion({ mode: FINAL.mode, easingId: FINAL.easingId, duration: easingDuration(easing) });
+  syncMotionUI(); // from motion.js
+});
 dirButtons.forEach((b) => b.addEventListener("click", () => setDirection(b.dataset.value)));
 dirControl.addEventListener("keydown", (e) => {
   if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
@@ -46,7 +72,7 @@ dirControl.addEventListener("keydown", (e) => {
   next.click();
   next.focus();
 });
-setDirection("a");
+setDirection(FINAL.direction);
 
 // Divider under the tabs
 document.querySelector('[data-toggle="divider"]')?.addEventListener("change", (e) => {

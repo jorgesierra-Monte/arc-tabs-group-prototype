@@ -179,14 +179,21 @@ function syncMotionUI() {
   const e = currentEasing();
   syncTarget();
   syncMode();
-  document.querySelector("[data-trigger-name]").textContent = e.name;
-  curveSVG(document.querySelector("[data-trigger-thumb]"), e, 24, 20);
+  const triggerName = document.querySelector("[data-trigger-name]");
+  if (triggerName) triggerName.textContent = e.name;
+  const triggerThumb = document.querySelector("[data-trigger-thumb]");
+  if (triggerThumb) curveSVG(triggerThumb, e, 24, 20);
   optionEls.forEach(({ btn }, id) => btn.setAttribute("aria-checked", String(id === m.easingId)));
   document.querySelector("[data-preview-value]").textContent = easingCSS(e);
   document.querySelector("[data-preview-value]").title = easingCSS(e);
   // Easing doesn't matter with no animation
-  trigger.disabled = m.mode === "none";
-  trigger.style.opacity = m.mode === "none" ? 0.4 : "";
+  if (trigger.dataset.easingTrigger === "panel") {
+    listEl.classList.toggle("is-off", m.mode === "none"); // trigger opens a wider panel; keep it usable
+  } else {
+    trigger.disabled = m.mode === "none";
+    trigger.style.opacity = m.mode === "none" ? 0.4 : "";
+  }
+  document.dispatchEvent(new CustomEvent("motionchange", { detail: m }));
 }
 syncMotionUI();
 

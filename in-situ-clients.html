@@ -191,23 +191,43 @@
   </div>
 
   <div class="controls">
-    <div class="easing-popover" id="easing-popover" hidden>
-      <div class="easing-scale" aria-hidden="true"><span>Subtle</span><span class="easing-scale-line"></span><span>Expressive</span></div>
-      <div class="easing-cards" data-easing-list role="radiogroup" aria-label="Easing curve"></div>
-      <div class="easing-value">
-        <code data-preview-value></code>
-        <button type="button" class="copy" data-copy>Copy</button>
+    <!-- Older explorations (opens above the bottom-right panel) -->
+    <div class="easing-popover explore-panel" id="easing-popover" hidden>
+      <div class="explore-head">
+        <span class="explore-title">Older explorations</span>
+        <button type="button" class="explore-reset" data-reset-final>Reset to final</button>
+      </div>
+      <div class="explore-row">
+        <span class="explore-label">Direction</span>
+        <div class="segmented" data-direction-control role="radiogroup" aria-label="Tab group direction">
+          <button type="button" role="radio" data-value="a">A · Text hover</button>
+          <button type="button" role="radio" data-value="b">B · Surface hover</button>
+          <button type="button" role="radio" data-value="c">C · Inverse selected</button>
+        </div>
+      </div>
+      <div class="explore-row">
+        <span class="explore-label">Motion</span>
+        <div class="segmented" data-motion-mode role="radiogroup" aria-label="Indicator animation">
+          <button type="button" role="radio" data-value="none">None</button>
+          <button type="button" role="radio" data-value="slide">Slide</button>
+          <button type="button" role="radio" data-value="stretch">Stretch</button>
+        </div>
+      </div>
+      <div class="explore-row explore-row-stack">
+        <span class="explore-label">Easing</span>
+        <div class="easing-scale" aria-hidden="true"><span>Subtle</span><span class="easing-scale-line"></span><span>Expressive</span></div>
+        <div class="easing-cards" data-easing-list role="radiogroup" aria-label="Easing curve"></div>
+        <div class="easing-value">
+          <code data-preview-value></code>
+          <button type="button" class="copy" data-copy>Copy</button>
+        </div>
       </div>
     </div>
 
-    <!-- Direction switch -->
-    <div class="bar" role="toolbar" aria-label="Direction">
-      <span class="bar-title">Direction</span>
-      <div class="segmented" data-direction-control role="radiogroup" aria-label="Tab group direction">
-        <button type="button" role="radio" data-value="a">A · Text hover</button>
-        <button type="button" role="radio" data-value="b">B · Surface hover</button>
-        <button type="button" role="radio" data-value="c">C · Inverse selected</button>
-      </div>
+    <!-- Bottom left: the final direction + page links -->
+    <div class="bar final-bar" role="toolbar" aria-label="Tab group">
+      <span class="bar-title">Tab group</span>
+      <span class="final-summary" data-summary></span>
       <span class="bar-divider" aria-hidden="true"></span>
       <div class="bar-group toggles">
         <label class="switch"><input type="checkbox" data-toggle="divider" checked /><span>Divider</span></label>
@@ -220,23 +240,15 @@
       </nav>
     </div>
 
-    <!-- Motion controls -->
-    <div class="bar motion-bar" role="toolbar" aria-label="Motion controls">
-      <span class="bar-title">Motion</span>
-      <div class="segmented" data-motion-mode role="radiogroup" aria-label="Indicator animation">
-        <button type="button" role="radio" data-value="none">None</button>
-        <button type="button" role="radio" data-value="slide">Slide</button>
-        <button type="button" role="radio" data-value="stretch">Stretch</button>
-      </div>
-      <span class="bar-divider" aria-hidden="true"></span>
-      <button type="button" class="chip-button" data-easing-trigger aria-haspopup="true" aria-expanded="false" aria-controls="easing-popover">
-        <svg data-trigger-thumb width="24" height="20" viewBox="0 0 24 20" aria-hidden="true"></svg>
-        <span class="easing-trigger-name" data-trigger-name></span>
-        <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 6.5 5 3.5 8 6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+    <!-- Bottom right: replay + older explorations -->
+    <div class="bar motion-bar" role="toolbar" aria-label="Motion">
       <button type="button" class="replay" data-replay title="Select the next tab (R)">
         <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4L10 6z" fill="currentColor"/></svg>
         Replay
+      </button>
+      <button type="button" class="chip-button explore-trigger" data-easing-trigger="panel" aria-haspopup="true" aria-expanded="false" aria-controls="easing-popover">
+        Older explorations
+        <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 6.5 5 3.5 8 6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
     </div>
   </div>
